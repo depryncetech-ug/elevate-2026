@@ -47,34 +47,30 @@ export function Countdown({ variant = "dark", showDetails = true }: { variant?: 
   return (
     <div>
       {state.phase === "upcoming" ? (
-        <div
-          className={cn(
-            "grid grid-cols-2 sm:grid-cols-4",
-            dark ? "divide-navy-foreground/15 border-y border-navy-foreground/15" : "border-y",
-            "[&>*:nth-child(odd)]:border-r sm:[&>*]:border-r sm:[&>*:last-child]:border-r-0 [&>*:nth-child(-n+2)]:border-b sm:[&>*:nth-child(-n+2)]:border-b-0",
-            dark && "[&>*]:border-navy-foreground/15",
-          )}
-          role="timer"
-          aria-live="off"
-          aria-label="Time until graduation"
-        >
+        <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 sm:gap-4" role="timer" aria-live="off" aria-label="Time until graduation">
           {[
             ["Days", state.days],
             ["Hours", state.hours],
             ["Minutes", state.minutes],
             ["Seconds", state.seconds],
           ].map(([label, value]) => (
-            <div key={label as string} className="px-3 py-6 text-center sm:px-6 sm:py-8">
+            <div
+              key={label as string}
+              className={cn(
+                "rounded-2xl border px-3 py-7 text-center sm:px-6 sm:py-10",
+                dark ? "border-navy-foreground/15 bg-navy-foreground/5 backdrop-blur" : "bg-card shadow-soft",
+              )}
+            >
               <div
                 key={String(value)}
                 className={cn(
-                  "font-hero text-6xl font-black tabular-nums leading-none tracking-tight animate-in fade-in slide-in-from-top-1 duration-300 sm:text-7xl lg:text-8xl",
-                  dark ? "text-navy-foreground" : "text-foreground",
+                  "font-display text-6xl font-extrabold tabular-nums animate-in fade-in slide-in-from-top-1 duration-300 sm:text-7xl lg:text-8xl",
+                  dark ? "text-gold-warm" : "text-royal",
                 )}
               >
                 {label === "Days" ? value : pad(value as number)}
               </div>
-              <div className={cn("mt-3 text-[11px] font-semibold uppercase tracking-[0.3em] sm:text-xs", dark ? "text-primary" : "text-primary")}>
+              <div className={cn("mt-2 text-[11px] font-semibold uppercase tracking-[0.2em] sm:text-xs", dark ? "text-navy-foreground/70" : "text-muted-foreground")}>
                 {label}
               </div>
             </div>
