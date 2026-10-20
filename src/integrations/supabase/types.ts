@@ -133,6 +133,7 @@ export type Database = {
       }
       graduation_messages: {
         Row: {
+          caption: string | null
           created_at: string
           id: string
           is_approved: boolean
@@ -142,6 +143,7 @@ export type Database = {
           video_url: string | null
         }
         Insert: {
+          caption?: string | null
           created_at?: string
           id?: string
           is_approved?: boolean
@@ -151,6 +153,7 @@ export type Database = {
           video_url?: string | null
         }
         Update: {
+          caption?: string | null
           created_at?: string
           id?: string
           is_approved?: boolean
@@ -478,6 +481,7 @@ export type Database = {
       }
       cast_vote: { Args: { _nominee_id: string }; Returns: Json }
       current_student_id: { Args: never; Returns: string }
+      ensure_my_student: { Args: never; Returns: string }
       get_my_student: {
         Args: never
         Returns: {

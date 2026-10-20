@@ -50,6 +50,13 @@
       "when": 1792506337825,
       "tag": "0006_gratitude_videos_one_project_per_dept",
       "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1792508199416,
+      "tag": "0007_gratitude_open_to_all_accounts",
+      "breakpoints": true
     }
   ]
 }
