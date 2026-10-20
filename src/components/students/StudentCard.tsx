@@ -5,7 +5,8 @@ import { DepartmentBadge, StudentAvatar } from "@/components/common/primitives";
 
 export function StudentCard({ student, projectCount }: { student: PublicStudent; projectCount: number }) {
   return (
-    <article className="group flex h-full flex-col rounded-2xl border bg-card p-6 shadow-soft transition-all duration-300 hover:-translate-y-1 hover:shadow-lift">
+    <article className="group relative flex h-full flex-col overflow-hidden rounded-lg border bg-card p-6 transition-colors duration-300 hover:border-primary/50">
+      <span aria-hidden className="absolute inset-x-0 top-0 h-0.5 origin-left scale-x-0 bg-navy-gradient transition-transform duration-500 group-hover:scale-x-100" />
       <div className="flex items-start gap-4">
         <StudentAvatar name={student.full_name} url={student.avatar_url} size="lg" />
         <div className="min-w-0">
