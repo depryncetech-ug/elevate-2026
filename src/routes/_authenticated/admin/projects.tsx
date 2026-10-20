@@ -72,7 +72,12 @@ function ReviewCard({ project: p }: { project: Project }) {
     setBusy(true);
     const { error } = await supabase.from("projects").update({ ...patch, reviewed_at: new Date().toISOString() }).eq("id", p.id);
     setBusy(false);
-    if (error) return void toast.error("Couldn't update the project. Please try again.");
+    if (error)
+      return void toast.error(
+        error.message.includes("ONE_PROJECT_PER_DEPARTMENT")
+          ? "This department already has an approved project. Each department can only show one — unpublish the other first."
+          : "Couldn't update the project. Please try again.",
+      );
     await logAdminAction(action, "project", p.id, `${msg}: ${p.title}`);
     toast.success(msg);
     setAsking(false);
