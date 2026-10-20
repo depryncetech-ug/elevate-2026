@@ -93,7 +93,7 @@ function HomePage() {
       <section className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
         <SectionHeading
           eyebrow="Showcase"
-          title="Featured Student Projects"
+          title="Featured Department Projects"
           description="A glimpse of the final projects our graduates are proudest of."
           action={
             <Button asChild variant="outline">
