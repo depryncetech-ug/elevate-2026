@@ -31,7 +31,7 @@ function AdminMessages() {
     queryFn: async (): Promise<Wish[]> => {
       const { data, error } = await supabase
         .from("graduation_messages")
-        .select("id, message, created_at, is_approved, student_id, student:students(id, full_name, avatar_url, department_id)")
+        .select("id, message, video_url, created_at, is_approved, student_id, student:students(id, full_name, avatar_url, department_id)")
         .order("created_at", { ascending: false });
       if (error) throw error;
       return data as unknown as Wish[];

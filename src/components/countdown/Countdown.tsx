@@ -57,14 +57,14 @@ export function Countdown({ variant = "dark", showDetails = true }: { variant?: 
             <div
               key={label as string}
               className={cn(
-                "rounded-2xl border px-3 py-6 text-center sm:px-4 sm:py-8",
+                "rounded-2xl border px-3 py-7 text-center sm:px-6 sm:py-10",
                 dark ? "border-navy-foreground/15 bg-navy-foreground/5 backdrop-blur" : "bg-card shadow-soft",
               )}
             >
               <div
                 key={String(value)}
                 className={cn(
-                  "font-display text-5xl font-extrabold tabular-nums animate-in fade-in slide-in-from-top-1 duration-300 sm:text-6xl lg:text-7xl",
+                  "font-display text-6xl font-extrabold tabular-nums animate-in fade-in slide-in-from-top-1 duration-300 sm:text-7xl lg:text-8xl",
                   dark ? "text-gold-warm" : "text-royal",
                 )}
               >
