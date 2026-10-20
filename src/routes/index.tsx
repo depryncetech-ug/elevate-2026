@@ -65,15 +65,15 @@ function HomePage() {
         </div>
         <div className="absolute inset-0 -z-10 bg-hero-overlay" />
         <div className="w-full pb-16 pt-28">
-          <h1 className="px-4 text-center font-hero text-[clamp(2.75rem,9vw,7.5rem)] font-black uppercase leading-[0.95] tracking-tight text-balance">
+          <h1 className="rise px-4 text-center font-hero text-[clamp(2.75rem,9vw,7.5rem)] font-black uppercase leading-[0.95] tracking-tight text-balance">
             Elevate <span className="text-gold-gradient">Class Of 2026</span>
           </h1>
-          <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+          <div className="rise mx-auto max-w-5xl px-4 [animation-delay:150ms] sm:px-6 lg:px-8">
             <p className="mt-6 text-center text-lg text-navy-foreground/80 sm:text-xl">
               Celebrating talent, creativity, learning and achievement.
             </p>
-            <div id="countdown" className="mt-8 scroll-mt-24">
-              <p className="mb-4 text-center text-xs font-semibold uppercase tracking-[0.25em] text-navy-foreground/70">Counting down to graduation</p>
+            <div id="countdown" className="mt-10 scroll-mt-24">
+              <p className="mb-5 flex items-center justify-center gap-3 text-xs font-semibold uppercase tracking-[0.3em] text-navy-foreground/70"><span className="h-px w-8 bg-primary" aria-hidden />Counting down to graduation<span className="h-px w-8 bg-primary" aria-hidden /></p>
               <Countdown variant="dark" />
             </div>
             <div className="mt-8 flex justify-center">
@@ -111,31 +111,41 @@ function HomePage() {
       </section>
 
       {/* Departments */}
-      <section className="bg-navy-gradient py-20 text-navy-foreground">
+      <section className="grain bg-navy py-20 text-navy-foreground sm:py-28">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <p className="text-xs font-semibold uppercase tracking-[0.25em] text-gold-warm">Programs</p>
-          <h2 className="mt-2 text-2xl font-extrabold sm:text-3xl">Six departments, one graduating class</h2>
-          <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {(departments.data ?? []).map((d) => {
-              const Icon = DEPT_ICONS[d.slug] ?? Award;
-              return (
-                <Link
-                  key={d.id}
-                  to="/projects"
-                  search={{ department: d.slug }}
-                  className="group rounded-2xl border border-navy-foreground/10 bg-navy-foreground/5 p-6 transition-all hover:-translate-y-1 hover:border-gold/50 hover:bg-navy-foreground/10"
-                >
-                  <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-gold/15 text-gold-warm">
-                    <Icon className="h-5 w-5" aria-hidden />
-                  </span>
-                  <h3 className="mt-4 text-lg font-bold">{d.name}</h3>
-                  <p className="mt-1 text-sm text-navy-foreground/70">{d.description}</p>
-                  <span className="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-gold-warm">
-                    See projects <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" aria-hidden />
-                  </span>
-                </Link>
-              );
-            })}
+          <div className="grid gap-10 lg:grid-cols-[1fr_2fr]">
+            <div className="lg:sticky lg:top-28 lg:self-start">
+              <p className="flex items-center gap-3 text-xs font-semibold uppercase tracking-[0.3em] text-primary">
+                <span className="h-px w-8 bg-primary" aria-hidden /> Programs
+              </p>
+              <h2 className="mt-4 font-hero text-4xl font-black uppercase leading-[0.95] tracking-tight sm:text-5xl">
+                Six departments, one graduating class
+              </h2>
+            </div>
+            <ol className="border-t border-navy-foreground/15">
+              {(departments.data ?? []).map((d, i) => {
+                const Icon = DEPT_ICONS[d.slug] ?? Award;
+                return (
+                  <li key={d.id}>
+                    <Link
+                      to="/projects"
+                      search={{ department: d.slug }}
+                      className="group grid grid-cols-[2.5rem_1fr_auto] items-center gap-4 border-b border-navy-foreground/15 py-6 transition-colors hover:bg-navy-foreground/[0.04] sm:grid-cols-[3.5rem_1fr_auto] sm:px-2"
+                    >
+                      <span className="font-hero text-sm font-bold tabular-nums text-navy-foreground/40">{String(i + 1).padStart(2, "0")}</span>
+                      <span className="min-w-0">
+                        <span className="flex items-center gap-3 text-xl font-bold sm:text-2xl">
+                          <Icon className="h-5 w-5 shrink-0 text-primary" aria-hidden />
+                          {d.name}
+                        </span>
+                        {d.description && <span className="mt-1 block text-sm text-navy-foreground/60">{d.description}</span>}
+                      </span>
+                      <ArrowRight className="h-5 w-5 text-navy-foreground/40 transition-all group-hover:translate-x-1 group-hover:text-primary" aria-hidden />
+                    </Link>
+                  </li>
+                );
+              })}
+            </ol>
           </div>
         </div>
       </section>
