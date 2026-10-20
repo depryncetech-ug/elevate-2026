@@ -27,7 +27,7 @@ const NAV = [
   { to: "/admin/students", label: "Students", icon: Users },
   { to: "/admin/projects", label: "Projects", icon: FolderOpen },
   { to: "/admin/nominees", label: "Nominees", icon: Award },
-  { to: "/admin/messages", label: "Graduation Wishes", icon: MessageSquareHeart },
+  { to: "/admin/messages", label: "Wall of Gratitude", icon: MessageSquareHeart },
   { to: "/admin/settings", label: "Graduation Settings", icon: Settings },
 ] as const;
 
