@@ -92,7 +92,7 @@ export function Countdown({ variant = "dark", showDetails = true }: { variant?: 
         <div className={cn("mt-5 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-sm", dark ? "text-navy-foreground/80" : "text-muted-foreground")}>
           <span className="inline-flex items-center gap-2">
             <CalendarDays className="h-4 w-4 text-gold" aria-hidden />
-            {date.toLocaleString(undefined, { weekday: "long", day: "numeric", month: "long", year: "numeric", hour: "numeric", minute: "2-digit" })}
+            {date.toLocaleString(undefined, { weekday: "long", day: "numeric", month: "long", year: "numeric", hour: "numeric", minute: "2-digit", timeZone: "Africa/Nairobi" })}
           </span>
           {settings.graduation_location && (
             <span className="inline-flex items-center gap-2">
