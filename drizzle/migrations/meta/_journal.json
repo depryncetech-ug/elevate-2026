@@ -57,6 +57,13 @@
       "when": 1792508199416,
       "tag": "0007_gratitude_open_to_all_accounts",
       "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "7",
+      "when": 1792508519550,
+      "tag": "0008_gratitude_column_grants",
+      "breakpoints": true
     }
   ]
 }
