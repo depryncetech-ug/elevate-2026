@@ -65,7 +65,7 @@ function WishVideo({ value }: { value: string }) {
 }
 
 export function WishForm() {
-  const { user, student } = useAuth();
+  const { user } = useAuth();
   const { data: settings } = useQuery(settingsQuery);
   const queryClient = useQueryClient();
   const [message, setMessage] = useState("");
@@ -79,7 +79,7 @@ export function WishForm() {
     return (
       <div className="rounded-2xl border bg-card p-6 text-center shadow-soft">
         <p className="font-semibold">Want to share your gratitude?</p>
-        <p className="mt-1 text-sm text-muted-foreground">Sign in with your registered student email to post on the wall.</p>
+        <p className="mt-1 text-sm text-muted-foreground">Sign in to your account to post a clip on the wall.</p>
         <Button asChild variant="navy" className="mt-4">
           <Link to="/login">Sign in to post</Link>
         </Button>
