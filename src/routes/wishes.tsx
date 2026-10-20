@@ -17,7 +17,7 @@ export const Route = createFileRoute("/wishes")({
       { title: "Wall of Gratitude — Elevate Academy Class of Dec 2026" },
       { name: "description", content: "Graduation wishes, memories and congratulations from Elevate Academy students." },
       { property: "og:title", content: "Wall of Gratitude — Elevate Academy" },
-      { property: "og:description", content: "Leave a graduation wish for the Class of December 2026." },
+      { property: "og:description", content: "Video thank-you clips from the Class of 2026." },
     ],
   }),
   component: WishesPage,
@@ -51,7 +51,7 @@ function WishesPage() {
 
   return (
     <>
-      <PageHeader eyebrow="Graduation Wall" title="Wall of Gratitude" description="Congratulations, memories and inspiration for the Class of December 2026." />
+      <PageHeader eyebrow="Graduation Wall" title="Wall of Gratitude" description="Video thank-you clips from the Class of 2026." />
       <div className="mx-auto grid max-w-7xl gap-8 px-4 py-12 sm:px-6 lg:grid-cols-[360px_1fr] lg:px-8">
         <div className="lg:sticky lg:top-24 lg:self-start">
           <WishForm />
@@ -66,7 +66,7 @@ function WishesPage() {
               ))}
             </div>
           ) : (
-            <EmptyState icon={MessageSquareHeart} title="No gratitude clips yet. Be the first to leave one!" />
+            <EmptyState icon={MessageSquareHeart} title="No gratitude clips yet. Be the first to share one!" />
           )}
         </div>
       </div>
