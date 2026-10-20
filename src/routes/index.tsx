@@ -65,16 +65,9 @@ function HomePage() {
         </div>
         <div className="absolute inset-0 -z-10 bg-hero-overlay" />
         <div className="w-full pb-16 pt-28">
-          <div className="overflow-hidden" aria-label="Elevate Class Of 2026">
-            <div className="animate-marquee flex w-max" aria-hidden>
-              {Array.from({ length: 6 }).map((_, i) => (
-                <span key={i} className="whitespace-nowrap px-8 font-display text-6xl font-extrabold leading-tight sm:text-8xl lg:text-9xl">
-                  Elevate <span className="text-gold-gradient">Class Of 2026</span> <span className="text-gold-warm">✦</span>
-                </span>
-              ))}
-            </div>
-          </div>
-          <h1 className="sr-only">Elevate Class Of 2026</h1>
+          <h1 className="px-4 text-center font-hero text-[clamp(2.75rem,9vw,7.5rem)] font-black uppercase leading-[0.95] tracking-tight text-balance">
+            Elevate <span className="text-gold-gradient">Class Of 2026</span>
+          </h1>
           <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
             <p className="mt-6 text-center text-lg text-navy-foreground/80 sm:text-xl">
               Celebrating talent, creativity, learning and achievement.
