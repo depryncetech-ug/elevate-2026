@@ -5,7 +5,7 @@ import { sniffType } from "@/lib/file-rules";
 // Files live in private buckets. The database stores a reference like
 // "storage:<bucket>/<path>"; readers get a short-lived signed link (storage rules decide who may read).
 export const STORAGE_PREFIX = "storage:";
-export type Bucket = "student-headshots" | "project-images" | "project-pdfs";
+export type Bucket = "student-headshots" | "project-images" | "project-pdfs" | "gratitude-videos";
 
 export function toStorageRef(bucket: Bucket, path: string) {
   return `${STORAGE_PREFIX}${bucket}/${path}`;

@@ -2,6 +2,11 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { ArrowRight, Award, Camera, Code2, Cpu, Headphones, MessageSquareHeart, Palette, Sparkles, Vote } from "lucide-react";
 import heroImg from "@/assets/hero-graduation.jpg";
+import crowdImg from "@/assets/hero-graduates-crowd.jpg.asset.json";
+import capsImg from "@/assets/hero-caps-throw.jpg.asset.json";
+import bannerImg from "@/assets/hero-graduates-banner.jpg.asset.json";
+
+const HERO_SLIDES = [heroImg, crowdImg.url, capsImg.url, bannerImg.url];
 import { departmentsQuery, projectsQuery, studentsQuery, wishesQuery } from "@/lib/data";
 import { Countdown } from "@/components/countdown/Countdown";
 import { ProjectCarousel } from "@/components/projects/ProjectCarousel";
@@ -53,32 +58,35 @@ function HomePage() {
     <>
       {/* Hero */}
       <section className="relative isolate flex min-h-[100svh] items-center overflow-hidden text-navy-foreground">
-        <img src={heroImg} alt="" width={1920} height={1088} className="absolute inset-0 -z-20 h-full w-full object-cover" />
+        <div className="absolute inset-0 -z-20" aria-hidden>
+          {HERO_SLIDES.map((src, i) => (
+            <img key={src} src={src} alt="" loading={i === 0 ? "eager" : "lazy"} className="hero-slide absolute inset-0 h-full w-full object-cover" style={{ animationDelay: `${i * 6}s` }} />
+          ))}
+        </div>
         <div className="absolute inset-0 -z-10 bg-hero-overlay" />
-        <div className="mx-auto w-full max-w-7xl px-4 pb-16 pt-28 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 items-center gap-10 sm:gap-12 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,1fr)]">
-            <div className="min-w-0 animate-in fade-in slide-in-from-bottom-4 duration-700">
-              <p className="inline-flex items-center gap-2 rounded-full border border-gold/40 bg-navy/40 px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.25em] text-gold-warm backdrop-blur">
-                <Award className="h-4 w-4" aria-hidden /> Elevate Class of 2026
-              </p>
-              <h1 className="mt-6 text-4xl font-extrabold leading-[1.05] sm:text-6xl lg:text-7xl">
-                Graduation <span className="text-gold-gradient">Celebration Portal</span>
-              </h1>
-              <p className="mt-6 max-w-xl text-lg text-navy-foreground/80 sm:text-xl">
-                Celebrating talent, creativity, learning and achievement.
-              </p>
-              <div className="mt-9 flex flex-col gap-3 sm:flex-row">
-                <Button asChild variant="gold" size="lg">
-                  <Link to="/projects">Explore Student Projects <ArrowRight className="h-5 w-5" /></Link>
-                </Button>
-                <Button asChild variant="glass" size="lg">
-                  <Link to="/vote"><Vote className="h-5 w-5" /> Vote for Your Outstanding Student</Link>
-                </Button>
-              </div>
+        <div className="w-full pb-16 pt-28">
+          <div className="overflow-hidden" aria-label="Elevate Class Of 2026">
+            <div className="animate-marquee flex w-max" aria-hidden>
+              {Array.from({ length: 6 }).map((_, i) => (
+                <span key={i} className="whitespace-nowrap px-8 font-display text-6xl font-extrabold leading-tight sm:text-8xl lg:text-9xl">
+                  Elevate <span className="text-gold-gradient">Class Of 2026</span> <span className="text-gold-warm">✦</span>
+                </span>
+              ))}
             </div>
-            <div id="countdown" className="w-full max-w-xl scroll-mt-24 justify-self-center lg:justify-self-end">
-              <p className="mb-4 text-center text-xs font-semibold uppercase tracking-[0.25em] text-navy-foreground/70 lg:text-left">Counting down to graduation</p>
+          </div>
+          <h1 className="sr-only">Elevate Class Of 2026</h1>
+          <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+            <p className="mt-6 text-center text-lg text-navy-foreground/80 sm:text-xl">
+              Celebrating talent, creativity, learning and achievement.
+            </p>
+            <div id="countdown" className="mt-8 scroll-mt-24">
+              <p className="mb-4 text-center text-xs font-semibold uppercase tracking-[0.25em] text-navy-foreground/70">Counting down to graduation</p>
               <Countdown variant="dark" />
+            </div>
+            <div className="mt-8 flex justify-center">
+              <Button asChild variant="gold" size="lg">
+                <Link to="/vote"><Vote className="h-5 w-5" /> Vote for Your Outstanding Student</Link>
+              </Button>
             </div>
           </div>
         </div>
@@ -165,12 +173,12 @@ function HomePage() {
       <section className="bg-secondary/60 py-20">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionHeading
-            eyebrow="Wall of Wishes"
-            title="Graduation Wishes"
-            description="Congratulations, memories and inspiration from the Class of December 2026."
+            eyebrow="Wall of Gratitude"
+            title="Wall of Gratitude"
+            description="Video thank-you clips from the Class of 2026."
             action={
               <Button asChild variant="navy">
-                <Link to="/wishes"><MessageSquareHeart className="h-4 w-4" /> Leave a wish</Link>
+                <Link to="/wishes"><MessageSquareHeart className="h-4 w-4" /> Record a clip</Link>
               </Button>
             }
           />
@@ -183,7 +191,7 @@ function HomePage() {
               ))}
             </div>
           ) : (
-            <EmptyState icon={MessageSquareHeart} title="No graduation wishes yet. Be the first to leave one!" />
+            <EmptyState icon={MessageSquareHeart} title="No gratitude clips yet. Be the first to share one!" />
           )}
         </div>
       </section>

@@ -60,6 +60,7 @@ export type Settings = {
 export type Wish = {
   id: string;
   message: string;
+  video_url: string | null;
   created_at: string;
   is_approved: boolean;
   student_id: string;
@@ -186,7 +187,7 @@ export const wishesQuery = (limit = 60) =>
     queryFn: async (): Promise<Wish[]> => {
       const { data, error } = await supabase
         .from("graduation_messages")
-        .select("id, message, created_at, is_approved, student_id, student:students(id, full_name, avatar_url, department_id)")
+        .select("id, message, video_url, created_at, is_approved, student_id, student:students(id, full_name, avatar_url, department_id)")
         .eq("is_approved", true)
         .order("created_at", { ascending: false })
         .limit(limit);

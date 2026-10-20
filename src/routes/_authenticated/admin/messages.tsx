@@ -14,9 +14,9 @@ export const Route = createFileRoute("/_authenticated/admin/messages")({
   head: () => ({
     meta: [
       { title: "Moderate Wishes — Elevate Academy" },
-      { name: "description", content: "Review and moderate Elevate Academy graduation wishes." },
+      { name: "description", content: "Review and moderate Elevate Academy gratitude clips." },
       { property: "og:title", content: "Moderate Wishes — Elevate Academy" },
-      { property: "og:description", content: "Review and moderate Elevate Academy graduation wishes." },
+      { property: "og:description", content: "Review and moderate Elevate Academy gratitude clips." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
@@ -31,7 +31,7 @@ function AdminMessages() {
     queryFn: async (): Promise<Wish[]> => {
       const { data, error } = await supabase
         .from("graduation_messages")
-        .select("id, message, created_at, is_approved, student_id, student:students(id, full_name, avatar_url, department_id)")
+        .select("id, message, video_url, created_at, is_approved, student_id, student:students(id, full_name, avatar_url, department_id)")
         .order("created_at", { ascending: false });
       if (error) throw error;
       return data as unknown as Wish[];
@@ -61,7 +61,7 @@ function AdminMessages() {
 
   return (
     <div className="space-y-6">
-      <h2 className="text-2xl font-extrabold">Graduation Wishes</h2>
+      <h2 className="text-2xl font-extrabold">Wall of Gratitude</h2>
       {isLoading ? (
         <Skeleton className="h-64 rounded-2xl" />
       ) : (
@@ -87,7 +87,7 @@ function AdminMessages() {
               </div>
             </li>
           ))}
-          {!data?.length && <p className="text-muted-foreground">No graduation wishes yet.</p>}
+          {!data?.length && <p className="text-muted-foreground">No gratitude clips yet.</p>}
         </ul>
       )}
     </div>

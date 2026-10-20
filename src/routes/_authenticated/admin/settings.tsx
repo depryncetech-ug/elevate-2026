@@ -118,7 +118,7 @@ function SettingsForm({ settings }: { settings: Settings }) {
           {
             id: "messages",
             label: "Graduation messages enabled",
-            help: "Allow students to post on the Wall of Wishes.",
+            help: "Allow students to post on the Wall of Gratitude.",
             checked: settings.messages_enabled,
             onChange: (v: boolean) => toggle("messages_enabled", v, "Graduation messages"),
           },

@@ -43,6 +43,13 @@
       "when": 1791544898138,
       "tag": "0005_open_registration",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1792506337825,
+      "tag": "0006_gratitude_videos_one_project_per_dept",
+      "breakpoints": true
     }
   ]
 }
