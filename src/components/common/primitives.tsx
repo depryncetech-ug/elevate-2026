@@ -111,12 +111,17 @@ export function EmptyState({
 
 export function PageHeader({ eyebrow, title, description, children }: { eyebrow?: string; title: string; description?: string; children?: ReactNode }) {
   return (
-    <section className="relative overflow-hidden bg-navy-gradient text-navy-foreground">
-      <div aria-hidden className="pointer-events-none absolute -right-24 -top-24 h-72 w-72 rounded-full bg-gold/15 blur-3xl" />
-      <div className="relative mx-auto max-w-7xl px-4 pb-14 pt-28 sm:px-6 lg:px-8">
-        {eyebrow && <p className="text-xs font-semibold uppercase tracking-[0.25em] text-gold-warm">{eyebrow}</p>}
-        <h1 className="mt-3 text-3xl font-extrabold sm:text-4xl lg:text-5xl">{title}</h1>
-        {description && <p className="mt-3 max-w-2xl text-navy-foreground/75">{description}</p>}
+    <section className="grain relative overflow-hidden bg-navy text-navy-foreground">
+      <div aria-hidden className="absolute inset-x-0 bottom-0 h-1 bg-navy-gradient" />
+      <div className="relative mx-auto max-w-7xl px-4 pb-14 pt-32 sm:px-6 lg:px-8">
+        {eyebrow && (
+          <p className="rise flex items-center gap-3 text-xs font-semibold uppercase tracking-[0.3em] text-navy-foreground/60">
+            <span className="h-px w-8 bg-primary" aria-hidden />
+            {eyebrow}
+          </p>
+        )}
+        <h1 className="rise mt-4 font-hero text-4xl font-black uppercase leading-[0.95] tracking-tight sm:text-5xl lg:text-6xl">{title}</h1>
+        {description && <p className="rise mt-4 max-w-2xl text-lg text-navy-foreground/70">{description}</p>}
         {children}
       </div>
     </section>
@@ -125,11 +130,16 @@ export function PageHeader({ eyebrow, title, description, children }: { eyebrow?
 
 export function SectionHeading({ eyebrow, title, description, action }: { eyebrow?: string; title: string; description?: string; action?: ReactNode }) {
   return (
-    <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+    <div className="mb-10 flex flex-col gap-5 border-b pb-6 sm:flex-row sm:items-end sm:justify-between">
       <div>
-        {eyebrow && <p className="text-xs font-semibold uppercase tracking-[0.25em] text-gold">{eyebrow}</p>}
-        <h2 className="mt-2 text-2xl font-extrabold sm:text-3xl">{title}</h2>
-        {description && <p className="mt-2 max-w-2xl text-muted-foreground">{description}</p>}
+        {eyebrow && (
+          <p className="flex items-center gap-3 text-xs font-semibold uppercase tracking-[0.3em] text-primary">
+            <span className="h-px w-8 bg-primary" aria-hidden />
+            {eyebrow}
+          </p>
+        )}
+        <h2 className="mt-3 font-hero text-3xl font-black uppercase leading-none tracking-tight sm:text-4xl">{title}</h2>
+        {description && <p className="mt-3 max-w-2xl text-muted-foreground">{description}</p>}
       </div>
       {action}
     </div>

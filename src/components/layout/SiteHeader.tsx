@@ -41,8 +41,8 @@ export function SiteHeader() {
               key={item.to}
               to={item.to}
               activeOptions={{ exact: item.to === "/" }}
-              className="rounded-lg px-3 py-2 text-sm font-medium text-navy-foreground/75 transition-colors hover:text-navy-foreground"
-              activeProps={{ className: "!text-gold-warm" }}
+              className="relative px-3 py-2 text-sm font-medium text-navy-foreground/70 transition-colors after:absolute after:inset-x-3 after:-bottom-0.5 after:h-0.5 after:origin-left after:scale-x-0 after:bg-primary after:transition-transform hover:text-navy-foreground hover:after:scale-x-100"
+              activeProps={{ className: "!text-navy-foreground after:!scale-x-100" }}
             >
               {item.label}
             </Link>
