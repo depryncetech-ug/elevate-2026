@@ -69,6 +69,7 @@ export function WishForm() {
   const { data: settings } = useQuery(settingsQuery);
   const queryClient = useQueryClient();
   const [message, setMessage] = useState("");
+  const [caption, setCaption] = useState("");
   const [video, setVideo] = useState<File | null>(null);
   const previewUrl = useMemo(() => (video ? URL.createObjectURL(video) : ""), [video]);
   const [error, setError] = useState<string | null>(null);
@@ -82,13 +83,6 @@ export function WishForm() {
         <Button asChild variant="navy" className="mt-4">
           <Link to="/login">Sign in to post</Link>
         </Button>
-      </div>
-    );
-  }
-  if (!student || !student.is_active) {
-    return (
-      <div className="rounded-2xl border bg-card p-6 text-center text-sm text-muted-foreground shadow-soft">
-        Only registered Elevate Academy students can post gratitude clips.
       </div>
     );
   }
@@ -107,31 +101,43 @@ export function WishForm() {
       setError(parsed.error.issues[0]?.message ?? "Invalid message");
       return;
     }
+    const cap = caption.trim();
+    if (!cap) return setError("Please add a caption for your clip.");
+    if (/<[^>]*>/.test(cap)) return setError("HTML is not allowed in captions.");
     if (!video) {
       setError("Please record or choose a video clip.");
       return;
     }
-    if (!video.type.startsWith("video/")) return setError("Please choose a video file.");
+    const ext = video.name.split(".").pop()?.toLowerCase() || "mp4";
+    const looksVideo = video.type.startsWith("video/") || ["mp4", "mov", "webm", "m4v", "3gp", "mkv", "avi"].includes(ext);
+    if (!looksVideo) return setError("Please choose a video file.");
     if (video.size > MAX_VIDEO_MB * 1024 * 1024) return setError(`Videos must be ${MAX_VIDEO_MB} MB or smaller.`);
     setError(null);
     setSubmitting(true);
-    const ext = video.name.split(".").pop()?.toLowerCase() || "mp4";
-    const path = `${student.id}/${crypto.randomUUID()}.${ext}`;
-    const up = await supabase.storage.from("gratitude-videos").upload(path, video, { contentType: video.type });
+    const { data: myId, error: idErr } = await supabase.rpc("ensure_my_student");
+    if (idErr || !myId) {
+      setSubmitting(false);
+      toast.error("We couldn't prepare your account. Please sign out and in again.");
+      return;
+    }
+    const studentId = myId as string;
+    const path = `${studentId}/${crypto.randomUUID()}.${ext}`;
+    const up = await supabase.storage.from("gratitude-videos").upload(path, video, { contentType: video.type || `video/${ext === "mov" ? "quicktime" : ext}` });
     if (up.error) {
       setSubmitting(false);
-      toast.error("We couldn't upload your video. Please try again.");
+      toast.error(`We couldn't upload your video: ${up.error.message}`);
       return;
     }
     const { error: err } = await supabase
       .from("graduation_messages")
-      .insert({ student_id: student.id, message: parsed.data, video_url: toStorageRef("gratitude-videos", path) });
+      .insert({ student_id: studentId, caption: cap.slice(0, 120), message: parsed.data, video_url: toStorageRef("gratitude-videos", path) });
     setSubmitting(false);
     if (err) {
       toast.error(messageErrorMessage(err));
       return;
     }
     setMessage("");
+    setCaption("");
     setVideo(null);
     toast.success("Your gratitude clip has been posted 🎉");
     queryClient.invalidateQueries({ queryKey: ["wishes"] });
@@ -141,23 +147,29 @@ export function WishForm() {
 
   return (
     <form onSubmit={submit} className="rounded-2xl border bg-card p-5 shadow-soft" noValidate>
-      <label htmlFor="wish" className="text-sm font-semibold">
-        Share your gratitude
-      </label>
+      <p className="text-sm font-semibold">Share your gratitude</p>
       <p className="mt-1 text-xs text-muted-foreground">Record a short clip of yourself (or pick one), up to {MAX_VIDEO_MB} MB.</p>
       <label className="mt-3 flex cursor-pointer items-center justify-center gap-2 rounded-xl border-2 border-dashed p-4 text-sm font-medium hover:bg-accent">
         <Video className="h-5 w-5" /> {video ? video.name : "Record or upload a video"}
-        <input type="file" accept="video/*" capture="user" className="sr-only" onChange={(e) => setVideo(e.target.files?.[0] ?? null)} />
+        <input type="file" accept="video/*" className="sr-only" onChange={(e) => setVideo(e.target.files?.[0] ?? null)} />
       </label>
       {video && <div className="mt-3"><CapVideo src={previewUrl} className="aspect-video w-full rounded-xl bg-muted object-cover" /></div>}
+      <Input
+        value={caption}
+        onChange={(e) => setCaption(e.target.value.slice(0, 120))}
+        placeholder="Caption (e.g. Thank you, Elevate!)"
+        className="mt-3"
+        aria-label="Caption"
+      />
       <Textarea
         id="wish"
         value={message}
         onChange={(e) => setMessage(e.target.value.slice(0, MAX_WISH_LENGTH))}
         maxLength={MAX_WISH_LENGTH}
-        rows={2}
-        placeholder="Optional caption…"
+        rows={3}
+        placeholder="Your message of gratitude…"
         className="mt-2 resize-none"
+        aria-label="Message"
         aria-invalid={!!error}
         aria-describedby="wish-help"
       />
