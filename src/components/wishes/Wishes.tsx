@@ -2,7 +2,8 @@ import { useMemo, useState } from "react";
 import { CapVideo } from "./CapVideo";
 import { Link } from "@tanstack/react-router";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { formatDistanceToNow } from "date-fns";
+import { format, formatDistanceToNow } from "date-fns";
+import { Input } from "@/components/ui/input";
 import { Loader2, Send, Smile, Trash2, Video } from "lucide-react";
 import { toStorageRef, useFileUrl } from "@/lib/storage";
 import { toast } from "sonner";
@@ -31,15 +32,16 @@ export function WishCard({ wish, onDelete }: { wish: Wish; onDelete?: (() => voi
   return (
     <article className="flex h-full flex-col rounded-2xl border bg-card p-5 shadow-soft">
       {wish.video_url && <WishVideo value={wish.video_url} />}
-      {wish.message && <p className="mt-3 flex-1 whitespace-pre-wrap break-words text-[15px] leading-relaxed">“{wish.message}”</p>}
+      {wish.caption && <h3 className="mt-3 font-display text-lg font-bold leading-snug">{wish.caption}</h3>}
+      {wish.message && <p className="mt-1.5 flex-1 whitespace-pre-wrap break-words text-[15px] leading-relaxed text-muted-foreground">{wish.message}</p>}
       <div className="mt-4 flex items-center gap-3 border-t pt-4">
         <StudentAvatar name={name} url={wish.student?.avatar_url} size="sm" />
         <div className="min-w-0 flex-1">
           <p className="truncate text-sm font-semibold">{name}</p>
           <div className="flex flex-wrap items-center gap-2">
             <DepartmentBadge departmentId={wish.student?.department_id} />
-            <time dateTime={wish.created_at} className="text-xs text-muted-foreground">
-              {formatDistanceToNow(new Date(wish.created_at), { addSuffix: true })}
+            <time dateTime={wish.created_at} className="text-xs text-muted-foreground" title={formatDistanceToNow(new Date(wish.created_at), { addSuffix: true })}>
+              {format(new Date(wish.created_at), "d MMM yyyy · h:mm a")}
             </time>
           </div>
         </div>
