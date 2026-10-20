@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
-import { Check, ExternalLink, FileText, Loader2, MessageSquareWarning, Star } from "lucide-react";
+import { Check, ExternalLink, FileText, Loader2, MessageSquareWarning, Star, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { adminProjectsQuery, logAdminAction } from "@/lib/admin";
@@ -87,6 +87,18 @@ function ReviewCard({ project: p }: { project: Project }) {
 
   const openPdf = () => openStoredFile(p.document_url!).catch(() => toast.error("This PDF could not be opened."));
 
+  const remove = async () => {
+    if (!window.confirm(`Delete "${p.title}" permanently? This cannot be undone.`)) return;
+    setBusy(true);
+    const { error } = await supabase.from("projects").delete().eq("id", p.id);
+    setBusy(false);
+    if (error) return void toast.error("Couldn't delete the project. Please try again.");
+    await logAdminAction("project_deleted", "project", p.id, `Project deleted: ${p.title}`);
+    toast.success("Project deleted");
+    queryClient.invalidateQueries({ queryKey: ["admin"] });
+    queryClient.invalidateQueries({ queryKey: ["projects"] });
+  };
+
   return (
     <article className="grid gap-4 rounded-2xl border bg-card p-5 shadow-soft md:grid-cols-[220px_1fr]">
       {cover ? (
@@ -124,6 +136,11 @@ function ReviewCard({ project: p }: { project: Project }) {
             </div>
           </div>
         )}
+        {!asking && p.submission_status === "draft" && (
+          <Button size="sm" variant="outline" disabled={busy} className="text-destructive" onClick={remove}>
+            <Trash2 className="h-4 w-4" /> Delete
+          </Button>
+        )}
         {!asking && p.submission_status !== "draft" && (
           <div className="flex flex-wrap gap-2">
             {p.submission_status !== "approved" && (
@@ -139,6 +156,9 @@ function ReviewCard({ project: p }: { project: Project }) {
                 <Star className="h-4 w-4" /> {p.is_featured ? "Unfeature" : "Feature"}
               </Button>
             )}
+            <Button size="sm" variant="outline" disabled={busy} className="text-destructive" onClick={remove}>
+              <Trash2 className="h-4 w-4" /> Delete
+            </Button>
           </div>
         )}
       </div>
