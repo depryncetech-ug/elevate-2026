@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
+import { CapVideo } from "./CapVideo";
 import { Link } from "@tanstack/react-router";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { formatDistanceToNow } from "date-fns";
@@ -55,7 +56,7 @@ export function WishCard({ wish, onDelete }: { wish: Wish; onDelete?: (() => voi
 function WishVideo({ value }: { value: string }) {
   const url = useFileUrl(value);
   return url ? (
-    <video src={url} controls playsInline preload="metadata" className="aspect-video w-full rounded-xl bg-muted object-cover" />
+    <CapVideo src={url} className="aspect-video w-full rounded-xl bg-muted object-cover" />
   ) : (
     <div className="aspect-video w-full animate-pulse rounded-xl bg-muted" />
   );
@@ -67,6 +68,7 @@ export function WishForm() {
   const queryClient = useQueryClient();
   const [message, setMessage] = useState("");
   const [video, setVideo] = useState<File | null>(null);
+  const previewUrl = useMemo(() => (video ? URL.createObjectURL(video) : ""), [video]);
   const [error, setError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
 
@@ -145,7 +147,7 @@ export function WishForm() {
         <Video className="h-5 w-5" /> {video ? video.name : "Record or upload a video"}
         <input type="file" accept="video/*" capture="user" className="sr-only" onChange={(e) => setVideo(e.target.files?.[0] ?? null)} />
       </label>
-      {video && <video src={URL.createObjectURL(video)} controls playsInline className="mt-3 aspect-video w-full rounded-xl bg-muted" />}
+      {video && <div className="mt-3"><CapVideo src={previewUrl} className="aspect-video w-full rounded-xl bg-muted object-cover" /></div>}
       <Textarea
         id="wish"
         value={message}
