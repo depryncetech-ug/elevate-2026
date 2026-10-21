@@ -4,7 +4,7 @@ import { Link } from "@tanstack/react-router";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { format, formatDistanceToNow } from "date-fns";
 import { Input } from "@/components/ui/input";
-import { Loader2, Send, Smile, Trash2, Video } from "lucide-react";
+import { Loader2, Send, Smile, Sparkles, Trash2, Video } from "lucide-react";
 import { toStorageRef, useFileUrl } from "@/lib/storage";
 import { toast } from "sonner";
 import { z } from "zod";
@@ -27,10 +27,29 @@ const wishSchema = z
 
 const EMOJIS = ["🎓", "🎉", "✨", "💛", "🚀", "👏", "🙌", "🌟", "❤️", "🥳", "💪", "🙏"];
 
-export function WishCard({ wish, onDelete }: { wish: Wish; onDelete?: (() => void) | undefined }) {
+export function NewWishNotice({ posts }: { posts: Wish[] }) {
+  const latest = posts[0];
+  return (
+    <div role="status" aria-live="polite" aria-atomic="true">
+      {latest && (
+        <div key={latest.id} className="gratitude-notice mb-5 flex items-center gap-3 rounded-xl border border-primary/30 bg-accent px-4 py-3 text-sm">
+          <span className="relative flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary">
+            <Sparkles className="h-5 w-5" aria-hidden />
+          </span>
+          <p className="min-w-0 break-words font-medium">
+            {posts.length > 1 ? `${posts.length} new gratitude posts just arrived` : `${latest.student?.full_name ?? "Someone"} just ${latest.video_url ? "shared a gratitude video" : "sent a message"}`}
+          </p>
+        </div>
+      )}
+    </div>
+  );
+}
+
+export function WishCard({ wish, onDelete, isNew = false }: { wish: Wish; onDelete?: (() => void) | undefined; isNew?: boolean }) {
   const name = wish.student?.full_name ?? "Elevate student";
   return (
-    <article className="flex h-full flex-col rounded-2xl border bg-card p-5 shadow-soft">
+    <article className={`flex h-full flex-col rounded-2xl border bg-card p-5 shadow-soft ${isNew ? "gratitude-arrival" : ""}`}>
+      {isNew && <span className="mb-3 inline-flex items-center gap-1.5 text-xs font-semibold text-primary"><Sparkles className="h-3.5 w-3.5" aria-hidden /> Just posted</span>}
       {wish.video_url && <WishVideo value={wish.video_url} />}
       {wish.caption && <h3 className="mt-3 font-display text-lg font-bold leading-snug">{wish.caption}</h3>}
       {wish.message && <p className="mt-1.5 flex-1 whitespace-pre-wrap break-words text-[15px] leading-relaxed text-muted-foreground">{wish.message}</p>}
@@ -58,9 +77,9 @@ export function WishCard({ wish, onDelete }: { wish: Wish; onDelete?: (() => voi
 function WishVideo({ value }: { value: string }) {
   const url = useFileUrl(value);
   return url ? (
-    <CapVideo src={url} className="aspect-video w-full rounded-xl bg-muted object-cover" />
+    <CapVideo src={url} />
   ) : (
-    <div className="aspect-video w-full animate-pulse rounded-xl bg-muted" />
+    <div className="aspect-[1080/1350] w-full animate-pulse rounded-xl bg-muted" />
   );
 }
 
@@ -153,7 +172,7 @@ export function WishForm() {
         <Video className="h-5 w-5" /> {video ? video.name : "Record or upload a video"}
         <input type="file" accept="video/*" className="sr-only" onChange={(e) => setVideo(e.target.files?.[0] ?? null)} />
       </label>
-      {video && <div className="mt-3"><CapVideo src={previewUrl} className="aspect-video w-full rounded-xl bg-muted object-cover" /></div>}
+      {video && <div className="mt-3"><CapVideo src={previewUrl} /></div>}
       <Input
         value={caption}
         onChange={(e) => setCaption(e.target.value.slice(0, 120))}

@@ -16,3 +16,5 @@
 - Data reads use TanStack Query option factories in src/lib/data.ts and src/lib/admin.ts with the browser client (RLS applies); no server functions needed yet.
 - Admin pages live under `src/routes/_authenticated/admin/`; the layout checks `has_role` and the root layout hides the public header there.
 - Admin actions write an `audit_logs` row via `logAdminAction` (RLS requires admin_id = auth.uid()).
+- Gratitude feeds share useLiveWishes for realtime invalidation and approved-query arrival detection; never announce raw realtime payloads because hidden posts must remain private.
+- CapVideo owns the shared responsive portrait frame and uses object-contain so uploads remain intact without cropping or re-encoding.

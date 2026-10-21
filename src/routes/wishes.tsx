@@ -1,12 +1,12 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { useEffect } from "react";
 import { MessageSquareHeart } from "lucide-react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { wishesQuery } from "@/lib/data";
 import { useAuth } from "@/lib/auth";
-import { WishCard, WishForm } from "@/components/wishes/Wishes";
+import { NewWishNotice, WishCard, WishForm } from "@/components/wishes/Wishes";
+import { useLiveWishes } from "@/components/wishes/useLiveWishes";
 import { CardGridSkeleton, EmptyState, PageHeader } from "@/components/common/primitives";
 
 export const Route = createFileRoute("/wishes")({
@@ -27,18 +27,7 @@ function WishesPage() {
   const { data, isLoading } = useQuery(wishesQuery(100));
   const { student } = useAuth();
   const queryClient = useQueryClient();
-
-  useEffect(() => {
-    const channel = supabase
-      .channel("wishes-wall")
-      .on("postgres_changes", { event: "*", schema: "public", table: "graduation_messages" }, () => {
-        queryClient.invalidateQueries({ queryKey: ["wishes"] });
-      })
-      .subscribe();
-    return () => {
-      supabase.removeChannel(channel);
-    };
-  }, [queryClient]);
+  const newPosts = useLiveWishes(data, "wishes-wall");
 
   const remove = async (id: string) => {
     const { error } = await supabase.from("graduation_messages").delete().eq("id", id);
@@ -57,12 +46,13 @@ function WishesPage() {
           <WishForm />
         </div>
         <div>
+          <NewWishNotice posts={newPosts} />
           {isLoading ? (
             <CardGridSkeleton count={4} />
           ) : data?.length ? (
             <div className="columns-1 gap-5 sm:columns-2 [&>*]:mb-5 [&>*]:break-inside-avoid">
               {data.map((w) => (
-                <WishCard key={w.id} wish={w} onDelete={student && w.student_id === student.id ? () => remove(w.id) : undefined} />
+                <WishCard key={w.id} wish={w} isNew={newPosts.some((post) => post.id === w.id)} onDelete={student && w.student_id === student.id ? () => remove(w.id) : undefined} />
               ))}
             </div>
           ) : (

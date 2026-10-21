@@ -1,5 +1,10 @@
 # Elevate Academy Graduation Portal — Roadmap
 
+## Current request
+- [x] Remove public Students navigation while preserving nominees and admin approval.
+- [x] Animate newly received gratitude posts on the homepage and wall (verified with a simulated arrival).
+- [x] Display gratitude videos in responsive 1080 × 1350 portrait frames (desktop and mobile verified).
+
 - [x] Phase 1–8 — Setup, database, auth, homepage, students, projects, voting, wishes
 - [ ] Phase 9 — Admin: overview, settings, students, nominees, wishes, projects review done; departments, votes, audit-log pages pending
 - [ ] Phase 10 — Reports & CSV exports

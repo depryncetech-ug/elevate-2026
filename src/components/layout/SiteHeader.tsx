@@ -16,7 +16,6 @@ import {
 
 const NAV = [
   { to: "/", label: "Home" },
-  { to: "/students", label: "Students" },
   { to: "/wishes", label: "Wall of Gratitude" },
   { to: "/vote", label: "Vote" },
 ] as const;
