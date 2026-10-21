@@ -1,9 +1,9 @@
 # Elevate Academy Graduation Portal — Roadmap
 
 ## Current request
-- [ ] Remove student project submission controls and enforce admin-only writes/uploads.
-- [ ] Add administrator department project creation with image, PDF and link.
-- [ ] Test permissions and administrator creation flow.
+- [x] Remove student project submission controls and enforce admin-only writes/uploads.
+- [x] Add administrator department project creation with image, PDF and link.
+- [x] Test permissions and administrator creation flow (image upload, public showcase readback and deletion verified).
 - [x] Remove public Students navigation while preserving nominees and admin approval.
 - [x] Animate newly received gratitude posts on the homepage and wall (verified with a simulated arrival).
 - [x] Display gratitude videos in responsive 1080 × 1350 portrait frames (desktop and mobile verified).

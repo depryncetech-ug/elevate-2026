@@ -19,10 +19,10 @@ export const Route = createFileRoute("/projects/")({
     meta: [
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
-      { title: "Student Projects — Elevate Academy Class of Dec 2026" },
-      { name: "description", content: "Browse final projects from Elevate Academy graduates across all six departments." },
-      { property: "og:title", content: "Student Projects — Elevate Academy" },
-      { property: "og:description", content: "Websites, design, film, motion graphics and more from the Class of December 2026." },
+      { title: "Department Projects — Elevate Class of 2026" },
+      { name: "description", content: "Browse official Elevate Class of 2026 department projects across all six departments." },
+      { property: "og:title", content: "Department Projects — Elevate Class of 2026" },
+      { property: "og:description", content: "Official department projects in websites, design, film, motion graphics and more." },
     ],
   }),
   component: ProjectsPage,
@@ -51,7 +51,7 @@ function ProjectsPage() {
 
   return (
     <>
-      <PageHeader eyebrow="Showcase" title="Student Project Showcase" description="Explore the final projects of the Elevate Academy Class of December 2026." />
+      <PageHeader eyebrow="Showcase" title="Department Project Showcase" description="Explore the department projects of the Elevate Class of 2026." />
       <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
         {featured.length > 0 && !activeDept && !debounced && (
           <section className="mb-14">
@@ -66,7 +66,7 @@ function ProjectsPage() {
             <Input
               value={term}
               onChange={(e) => setTerm(e.target.value)}
-              placeholder="Search by student, project or department"
+              placeholder="Search by project or department"
               className="pl-9"
               aria-label="Search projects"
             />
