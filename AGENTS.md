@@ -19,3 +19,4 @@
 - Gratitude feeds share useLiveWishes for realtime invalidation and approved-query arrival detection; never announce raw realtime payloads because hidden posts must remain private.
 - CapVideo owns the shared responsive portrait frame and uses object-contain so uploads remain intact without cropping or re-encoding.
 - Public headshot and gratitude storage reads require exact references from active student profiles or approved posts; preserve authenticated own-folder and admin access so unused and hidden uploads stay private.
+- Enforce hub/settings visibility and project-file sign-in requirements in database SELECT policies, not only in the interface, to protect direct requests.
