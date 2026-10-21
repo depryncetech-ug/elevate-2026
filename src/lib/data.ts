@@ -26,7 +26,8 @@ export type PublicStudent = {
 
 export type Project = {
   id: string;
-  student_id: string;
+  student_id: string | null;
+  source?: "department_projects" | "projects";
   department_id: string;
   title: string;
   description: string | null;
@@ -69,6 +70,11 @@ export type Wish = {
 };
 
 export const PROJECT_SELECT = `id, student_id, department_id, title, short_description, description, cover_image_url, project_type, project_url, video_url, document_url, tools_used, submission_status, admin_feedback, submitted_at, is_featured, is_published, created_at, updated_at, student:students(id, full_name, avatar_url)`;
+
+export const DEPARTMENT_PROJECT_SELECT = "id, department_id, title, short_description, description, cover_image_url, project_type, project_url, video_url, document_url, tools_used, submission_status, admin_feedback, submitted_at, is_featured, is_published, created_at, updated_at";
+export function departmentProject(row: unknown): Project {
+  return { ...(row as Omit<Project, "student_id" | "student">), student_id: null, student: null, source: "department_projects" };
+}
 
 export const settingsQuery = queryOptions({
   queryKey: ["settings"],
@@ -150,7 +156,9 @@ export const projectsQuery = queryOptions({
       .order("is_featured", { ascending: false })
       .order("created_at", { ascending: false });
     if (error) throw error;
-    return data as unknown as Project[];
+    const department = await supabase.from("department_projects").select(DEPARTMENT_PROJECT_SELECT).eq("is_published", true).eq("submission_status", "approved");
+    if (department.error) throw department.error;
+    return [...(data as unknown as Project[]), ...(department.data ?? []).map(departmentProject)].sort((a, b) => Number(b.is_featured) - Number(a.is_featured) || b.created_at.localeCompare(a.created_at));
   },
   staleTime: 60_000,
 });
@@ -161,7 +169,10 @@ export const projectQuery = (id: string) =>
     queryFn: async (): Promise<Project | null> => {
       const { data, error } = await supabase.from("projects").select(PROJECT_SELECT).eq("id", id).maybeSingle();
       if (error) throw error;
-      return data as unknown as Project | null;
+      if (data) return data as unknown as Project;
+      const department = await supabase.from("department_projects").select(DEPARTMENT_PROJECT_SELECT).eq("id", id).maybeSingle();
+      if (department.error) throw department.error;
+      return department.data ? departmentProject(department.data) : null;
     },
   });
 
