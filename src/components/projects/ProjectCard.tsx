@@ -65,10 +65,10 @@ export function ProjectCard({ project }: { project: Project }) {
       <div className="flex flex-1 flex-col p-5">
         <DepartmentBadge departmentId={project.department_id} className="self-start" />
         <h3 className="mt-3 line-clamp-1 text-lg font-bold">{project.title}</h3>
-        <div className="mt-1 flex items-center gap-2">
+        {project.student && <div className="mt-1 flex items-center gap-2">
           <StudentAvatar name={project.student?.full_name ?? "Elevate student"} url={project.student?.avatar_url} size="sm" className="h-7 w-7 text-[10px]" />
           <p className="text-sm font-medium text-royal">{project.student?.full_name ?? "Elevate student"}</p>
-        </div>
+        </div>}
         <p className="mt-2 line-clamp-2 flex-1 text-sm text-muted-foreground">{summary}</p>
         <div className="mt-4 flex flex-wrap gap-x-4 gap-y-2">
           <Link to="/projects/$id" params={{ id: project.id }} className={actionClass}>

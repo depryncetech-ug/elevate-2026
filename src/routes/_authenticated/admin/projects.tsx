@@ -1,14 +1,16 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
-import { Check, ExternalLink, FileText, Loader2, MessageSquareWarning, Star, Trash2 } from "lucide-react";
+import { Check, ExternalLink, FileText, Loader2, MessageSquareWarning, Plus, Star, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { adminProjectsQuery, logAdminAction } from "@/lib/admin";
 import type { Project } from "@/lib/data";
 import { STATUS_LABEL, type SubmissionStatus } from "@/lib/projects";
 import { openStoredFile, useFileUrl } from "@/lib/storage";
-import { StudentAvatar } from "@/components/common/primitives";
+import { DepartmentBadge, StudentAvatar } from "@/components/common/primitives";
+import { AdminProjectForm } from "@/components/uploads/AdminProjectForm";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Textarea } from "@/components/ui/textarea";
@@ -16,10 +18,10 @@ import { Textarea } from "@/components/ui/textarea";
 export const Route = createFileRoute("/_authenticated/admin/projects")({
   head: () => ({
     meta: [
-      { title: "Review Projects — Elevate Academy" },
-      { name: "description", content: "Approve or request changes on student project submissions." },
-      { property: "og:title", content: "Review Projects — Elevate Academy" },
-      { property: "og:description", content: "Approve or request changes on student project submissions." },
+      { title: "Department Projects — Elevate Academy Admin" },
+      { name: "description", content: "Add and manage official Elevate department projects." },
+      { property: "og:title", content: "Department Projects — Elevate Academy Admin" },
+      { property: "og:description", content: "Manage the official department project showcase." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
     ],
@@ -31,15 +33,17 @@ const TABS: SubmissionStatus[] = ["pending", "approved", "rejected", "draft"];
 
 function AdminProjects() {
   const { data, isLoading } = useQuery(adminProjectsQuery);
-  const [tab, setTab] = useState<SubmissionStatus>("pending");
+  const [tab, setTab] = useState<SubmissionStatus>("approved");
+  const [creating, setCreating] = useState(false);
   const list = (data ?? []).filter((p) => p.submission_status === tab);
 
   return (
     <div className="mx-auto max-w-5xl space-y-6">
-      <div>
-        <h2 className="text-2xl font-bold">Project Review</h2>
-        <p className="text-sm text-muted-foreground">Approved projects appear publicly on the Projects page.</p>
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <h2 className="text-2xl font-bold">Department Projects</h2>
+        <Button variant="navy" onClick={() => setCreating(true)}><Plus className="h-4 w-4" /> Add project</Button>
       </div>
+      <Dialog open={creating} onOpenChange={setCreating}><DialogContent className="max-h-[90svh] overflow-y-auto sm:max-w-2xl"><DialogHeader><DialogTitle>Add department project</DialogTitle></DialogHeader><AdminProjectForm onSaved={(published) => { setCreating(false); setTab(published ? "approved" : "draft"); }} /></DialogContent></Dialog>
       <div className="flex flex-wrap gap-2">
         {TABS.map((t) => {
           const n = (data ?? []).filter((p) => p.submission_status === t).length;
@@ -70,7 +74,7 @@ function ReviewCard({ project: p }: { project: Project }) {
 
   const update = async (patch: Record<string, unknown>, action: string, msg: string) => {
     setBusy(true);
-    const { error } = await supabase.from("projects").update({ ...patch, reviewed_at: new Date().toISOString() }).eq("id", p.id);
+    const { error } = await supabase.from(p.source ?? "projects").update({ ...patch, reviewed_at: new Date().toISOString() }).eq("id", p.id);
     setBusy(false);
     if (error)
       return void toast.error(
@@ -85,12 +89,12 @@ function ReviewCard({ project: p }: { project: Project }) {
     queryClient.invalidateQueries({ queryKey: ["projects"] });
   };
 
-  const openPdf = () => openStoredFile(p.document_url!).catch(() => toast.error("This PDF could not be opened."));
+  const openPdf = () => { if (p.document_url) void openStoredFile(p.document_url).catch(() => toast.error("This PDF could not be opened.")); };
 
   const remove = async () => {
     if (!window.confirm(`Delete "${p.title}" permanently? This cannot be undone.`)) return;
     setBusy(true);
-    const { error } = await supabase.from("projects").delete().eq("id", p.id);
+    const { error } = await supabase.from(p.source ?? "projects").delete().eq("id", p.id);
     setBusy(false);
     if (error) return void toast.error("Couldn't delete the project. Please try again.");
     await logAdminAction("project_deleted", "project", p.id, `Project deleted: ${p.title}`);
@@ -108,8 +112,8 @@ function ReviewCard({ project: p }: { project: Project }) {
       )}
       <div className="min-w-0 space-y-3">
         <div className="flex flex-wrap items-center gap-2">
-          <StudentAvatar name={p.student?.full_name ?? "Student"} url={p.student?.avatar_url ?? null} size="sm" />
-          <span className="text-sm font-semibold">{p.student?.full_name}</span>
+          <DepartmentBadge departmentId={p.department_id} />
+          {p.student && <><StudentAvatar name={p.student.full_name} url={p.student.avatar_url} size="sm" /><span className="text-sm font-semibold">{p.student.full_name}</span></>}
           <span className="rounded-full bg-accent px-2 py-0.5 text-xs font-bold text-primary">{p.project_type}</span>
           {p.is_featured && <span className="flex items-center gap-1 text-xs font-bold text-primary"><Star className="h-3 w-3 fill-current" /> Featured</span>}
         </div>
@@ -137,9 +141,12 @@ function ReviewCard({ project: p }: { project: Project }) {
           </div>
         )}
         {!asking && p.submission_status === "draft" && (
+          <div className="flex flex-wrap gap-2">
+          {p.source === "department_projects" && <Button size="sm" variant="navy" disabled={busy} onClick={() => update({ submission_status: "approved", is_published: true }, "project_published", "Project published")}><Check className="h-4 w-4" /> Publish</Button>}
           <Button size="sm" variant="outline" disabled={busy} className="text-destructive" onClick={remove}>
             <Trash2 className="h-4 w-4" /> Delete
           </Button>
+          </div>
         )}
         {!asking && p.submission_status !== "draft" && (
           <div className="flex flex-wrap gap-2">
@@ -148,9 +155,9 @@ function ReviewCard({ project: p }: { project: Project }) {
                 {busy ? <Loader2 className="h-4 w-4 animate-spin" /> : <Check className="h-4 w-4" />} Approve
               </Button>
             )}
-            <Button size="sm" variant="outline" disabled={busy} onClick={() => setAsking(true)}>
+            {p.source !== "department_projects" && <Button size="sm" variant="outline" disabled={busy} onClick={() => setAsking(true)}>
               <MessageSquareWarning className="h-4 w-4" /> Request changes
-            </Button>
+            </Button>}
             {p.submission_status === "approved" && (
               <Button size="sm" variant="outline" disabled={busy} onClick={() => update({ is_featured: !p.is_featured }, "project_featured", p.is_featured ? "Removed from featured" : "Marked as featured")}>
                 <Star className="h-4 w-4" /> {p.is_featured ? "Unfeature" : "Feature"}

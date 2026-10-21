@@ -53,7 +53,7 @@ function HomePage() {
   const featured = (projects.data ?? []).filter((p) => p.is_featured);
   const sliderProjects = featured.length >= 3 ? featured : (projects.data ?? []).slice(0, 8);
   const projectCounts = new Map<string, number>();
-  (projects.data ?? []).forEach((p) => projectCounts.set(p.student_id, (projectCounts.get(p.student_id) ?? 0) + 1));
+  (projects.data ?? []).forEach((p) => { if (p.student_id) projectCounts.set(p.student_id, (projectCounts.get(p.student_id) ?? 0) + 1); });
   const featuredStudents = (students.data ?? []).filter((s) => s.is_nominee).slice(0, 6);
 
   return (

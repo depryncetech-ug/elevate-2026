@@ -1,6 +1,6 @@
 import { queryOptions } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
-import { PROJECT_SELECT, type Project } from "@/lib/data";
+import { DEPARTMENT_PROJECT_SELECT, departmentProject, PROJECT_SELECT, type Project } from "@/lib/data";
 
 export type AdminStudent = {
   id: string;
@@ -35,15 +35,17 @@ export const adminStudentsQuery = queryOptions({
 export const adminCountsQuery = queryOptions({
   queryKey: ["admin", "counts"],
   queryFn: async () => {
-    const [votes, projects, messages] = await Promise.all([
+    const [votes, projects, messages, departmentProjects] = await Promise.all([
       supabase.from("votes").select("id, department_id, created_at"),
       supabase.from("projects").select("id, submission_status, department_id, hub_id"),
       supabase.from("graduation_messages").select("id", { count: "exact", head: true }),
+      supabase.from("department_projects").select("id, submission_status, department_id, hub_id"),
     ]);
     if (votes.error) throw votes.error;
+    if (departmentProjects.error) throw departmentProjects.error;
     return {
       votes: votes.data ?? [],
-      projects: projects.data ?? [],
+      projects: [...(projects.data ?? []), ...(departmentProjects.data ?? [])],
       messages: messages.count ?? 0,
     };
   },
@@ -58,7 +60,9 @@ export const adminProjectsQuery = queryOptions({
       .order("submitted_at", { ascending: false, nullsFirst: false })
       .order("created_at", { ascending: false });
     if (error) throw error;
-    return data as unknown as Project[];
+    const department = await supabase.from("department_projects").select(DEPARTMENT_PROJECT_SELECT).order("created_at", { ascending: false });
+    if (department.error) throw department.error;
+    return [...(data as unknown as Project[]), ...(department.data ?? []).map(departmentProject)].sort((a, b) => b.created_at.localeCompare(a.created_at));
   },
 });
 

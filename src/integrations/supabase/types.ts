@@ -107,6 +107,83 @@ export type Database = {
         }
         Relationships: []
       }
+      department_projects: {
+        Row: {
+          admin_feedback: string | null
+          cover_image_url: string | null
+          created_at: string
+          department_id: string
+          description: string | null
+          document_url: string | null
+          hub_id: string | null
+          id: string
+          is_featured: boolean
+          is_published: boolean
+          project_type: string
+          project_url: string | null
+          reviewed_at: string | null
+          short_description: string | null
+          submission_status: string
+          submitted_at: string | null
+          title: string
+          tools_used: string[]
+          updated_at: string
+          video_url: string | null
+        }
+        Insert: {
+          admin_feedback?: string | null
+          cover_image_url?: string | null
+          created_at?: string
+          department_id: string
+          description?: string | null
+          document_url?: string | null
+          hub_id?: string | null
+          id?: string
+          is_featured?: boolean
+          is_published?: boolean
+          project_type?: string
+          project_url?: string | null
+          reviewed_at?: string | null
+          short_description?: string | null
+          submission_status?: string
+          submitted_at?: string | null
+          title: string
+          tools_used?: string[]
+          updated_at?: string
+          video_url?: string | null
+        }
+        Update: {
+          admin_feedback?: string | null
+          cover_image_url?: string | null
+          created_at?: string
+          department_id?: string
+          description?: string | null
+          document_url?: string | null
+          hub_id?: string | null
+          id?: string
+          is_featured?: boolean
+          is_published?: boolean
+          project_type?: string
+          project_url?: string | null
+          reviewed_at?: string | null
+          short_description?: string | null
+          submission_status?: string
+          submitted_at?: string | null
+          title?: string
+          tools_used?: string[]
+          updated_at?: string
+          video_url?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "department_projects_department_id_fkey"
+            columns: ["department_id"]
+            isOneToOne: false
+            referencedRelation: "departments"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       departments: {
         Row: {
           created_at: string

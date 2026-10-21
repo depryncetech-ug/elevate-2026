@@ -33,7 +33,7 @@ function StudentsPage() {
 
   const counts = useMemo(() => {
     const m = new Map<string, number>();
-    (projects ?? []).forEach((p) => m.set(p.student_id, (m.get(p.student_id) ?? 0) + 1));
+    (projects ?? []).forEach((p) => { if (p.student_id) m.set(p.student_id, (m.get(p.student_id) ?? 0) + 1); });
     return m;
   }, [projects]);
 

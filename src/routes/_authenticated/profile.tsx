@@ -16,7 +16,6 @@ import { Label } from "@/components/ui/label";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Textarea } from "@/components/ui/textarea";
 import { HeadshotUploader } from "@/components/uploads/HeadshotUploader";
-import { ProjectSubmission } from "@/components/uploads/ProjectSubmission";
 
 export const Route = createFileRoute("/_authenticated/profile")({
   head: () => ({
@@ -144,11 +143,9 @@ function ProfilePage() {
 
         <div id="photo" className="rounded-2xl border bg-card p-6 shadow-soft">
           <h2 className="text-lg font-bold">Your profile picture</h2>
-          <p className="mb-4 text-sm text-muted-foreground">Upload a clear headshot. It appears on your student card and project.</p>
+          <p className="mb-4 text-sm text-muted-foreground">Upload a clear headshot. It appears on your student card.</p>
           <HeadshotUploader studentId={student.id} name={student.full_name} avatarUrl={student.avatar_url} />
         </div>
-
-        <div id="project"><ProjectSubmission studentId={student.id} /></div>
 
         <form onSubmit={save} className="rounded-2xl border bg-card p-6 shadow-soft">
           <h2 className="text-lg font-bold">Your public profile</h2>
