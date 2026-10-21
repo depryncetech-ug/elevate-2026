@@ -85,6 +85,13 @@
       "when": 1792572283179,
       "tag": "0011_apply_selected_public_visibility_restrictions",
       "breakpoints": true
+    },
+    {
+      "idx": 12,
+      "version": "7",
+      "when": 1792588817932,
+      "tag": "0012_admin_owned_department_project_catalog",
+      "breakpoints": true
     }
   ]
 }
