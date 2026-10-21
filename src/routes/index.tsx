@@ -11,7 +11,8 @@ import { departmentsQuery, projectsQuery, studentsQuery, wishesQuery } from "@/l
 import { Countdown } from "@/components/countdown/Countdown";
 import { ProjectCarousel } from "@/components/projects/ProjectCarousel";
 import { StudentCard } from "@/components/students/StudentCard";
-import { WishCard } from "@/components/wishes/Wishes";
+import { NewWishNotice, WishCard } from "@/components/wishes/Wishes";
+import { useLiveWishes } from "@/components/wishes/useLiveWishes";
 import { CardGridSkeleton, EmptyState, SectionHeading } from "@/components/common/primitives";
 import { Button } from "@/components/ui/button";
 import { WinnersSection } from "@/components/results/WinnersSection";
@@ -47,6 +48,7 @@ function HomePage() {
   const students = useQuery(studentsQuery);
   const departments = useQuery(departmentsQuery);
   const wishes = useQuery(wishesQuery(6));
+  const newPosts = useLiveWishes(wishes.data, "homepage-gratitude");
 
   const featured = (projects.data ?? []).filter((p) => p.is_featured);
   const sliderProjects = featured.length >= 3 ? featured : (projects.data ?? []).slice(0, 8);
@@ -145,11 +147,6 @@ function HomePage() {
         <SectionHeading
           eyebrow="Graduates"
           title="Meet Our Award Nominees"
-          action={
-            <Button asChild variant="outline">
-              <Link to="/students">All students <ArrowRight className="h-4 w-4" /></Link>
-            </Button>
-          }
         />
         {students.isLoading ? (
           <CardGridSkeleton count={3} />
@@ -175,12 +172,13 @@ function HomePage() {
               </Button>
             }
           />
+          <NewWishNotice posts={newPosts} />
           {wishes.isLoading ? (
             <CardGridSkeleton count={3} />
           ) : wishes.data?.length ? (
             <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
               {wishes.data.map((w) => (
-                <WishCard key={w.id} wish={w} />
+                <WishCard key={w.id} wish={w} isNew={newPosts.some((post) => post.id === w.id)} />
               ))}
             </div>
           ) : (

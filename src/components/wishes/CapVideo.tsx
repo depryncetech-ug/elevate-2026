@@ -83,8 +83,8 @@ export function CapVideo({ src, className }: { src: string; className?: string }
     : { left: "50%", top: "4%", width: "22%", transform: "translateX(-50%)" };
 
   return (
-    <div className="relative overflow-hidden rounded-xl">
-      <video ref={videoRef} src={src} controls playsInline preload="metadata" crossOrigin="anonymous" className={className} />
+    <div className="relative aspect-[1080/1350] w-full overflow-hidden rounded-xl bg-navy">
+      <video ref={videoRef} src={src} controls playsInline preload="metadata" crossOrigin="anonymous" className={`h-full w-full object-contain ${className ?? ""}`} />
       <img
         src={capSticker}
         alt=""
