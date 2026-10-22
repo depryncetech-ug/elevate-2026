@@ -75,7 +75,7 @@ function HomePage() {
               Celebrating talent, creativity, learning and achievement.
             </p>
             <div id="countdown" className="hero-countdown mt-6 scroll-mt-24">
-              <p className="mb-4 text-center text-xs font-semibold uppercase tracking-[0.25em] text-navy-foreground/70">Counting down to graduation</p>
+              <p className="mb-4 text-center text-sm font-semibold uppercase tracking-[0.25em] text-gold-gradient sm:text-base">Counting down to graduation</p>
               <Countdown variant="dark" />
             </div>
             <div className="hero-vote mt-6 flex justify-center">

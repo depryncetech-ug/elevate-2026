@@ -58,7 +58,7 @@ export function Countdown({ variant = "dark", showDetails = true }: { variant?: 
               key={label as string}
               className={cn(
                 "countdown-tile flex flex-col items-center justify-center rounded-2xl border px-1 text-center",
-                dark ? "countdown-celebration border-countdown-accent/40 bg-countdown-surface shadow-countdown" : "bg-card shadow-soft",
+                dark ? "countdown-celebration border-countdown-accent/20 bg-countdown-surface shadow-countdown backdrop-blur-sm" : "bg-card shadow-soft",
               )}
             >
               <div
