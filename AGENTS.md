@@ -17,6 +17,7 @@
 - Admin pages live under `src/routes/_authenticated/admin/`; the layout checks `has_role` and the root layout hides the public header there.
 - Admin actions write an `audit_logs` row via `logAdminAction` (RLS requires admin_id = auth.uid()).
 - Gratitude feeds share useLiveWishes for realtime invalidation and approved-query arrival detection; never announce raw realtime payloads because hidden posts must remain private.
+- Gratitude post validation is shared in src/lib/gratitude.ts; render text-only posts in the shared pausable GratitudeMessages strip and video posts in portrait cards so both public feeds stay consistent.
 - CapVideo owns the shared responsive portrait frame and uses object-contain so uploads remain intact without cropping or re-encoding.
 - Public headshot and gratitude storage reads require exact references from active student profiles or approved posts; preserve authenticated own-folder and admin access so unused and hidden uploads stay private.
 - Enforce hub/settings visibility and project-file sign-in requirements in database SELECT policies, not only in the interface, to protect direct requests.

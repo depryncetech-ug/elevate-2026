@@ -34,9 +34,9 @@ export function Countdown({ variant = "dark", showDetails = true }: { variant?: 
 
   if (isLoading || !settings || !state) {
     return (
-      <div className="grid grid-cols-4 gap-3 sm:gap-4" aria-busy="true">
+      <div className="countdown-grid grid grid-cols-4 gap-2 sm:gap-4" aria-busy="true">
         {Array.from({ length: 4 }).map((_, i) => (
-          <Skeleton key={i} className={cn("h-32 rounded-2xl sm:h-40", dark && "bg-navy-foreground/10")} />
+          <Skeleton key={i} className={cn("countdown-tile rounded-2xl", dark && "bg-navy-foreground/10")} />
         ))}
       </div>
     );
@@ -47,7 +47,7 @@ export function Countdown({ variant = "dark", showDetails = true }: { variant?: 
   return (
     <div>
       {state.phase === "upcoming" ? (
-        <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 sm:gap-4" role="timer" aria-live="off" aria-label="Time until graduation">
+        <div className="countdown-grid grid grid-cols-4 gap-2 sm:gap-4" role="timer" aria-live="off" aria-label="Time until graduation">
           {[
             ["Days", state.days],
             ["Hours", state.hours],
@@ -57,20 +57,20 @@ export function Countdown({ variant = "dark", showDetails = true }: { variant?: 
             <div
               key={label as string}
               className={cn(
-                "rounded-2xl border px-3 py-7 text-center sm:px-6 sm:py-10",
-                dark ? "border-navy-foreground/15 bg-navy-foreground/5 backdrop-blur" : "bg-card shadow-soft",
+                "countdown-tile flex flex-col items-center justify-center rounded-2xl border px-1 text-center",
+                dark ? "countdown-celebration border-countdown-accent/40 bg-countdown-surface shadow-countdown" : "bg-card shadow-soft",
               )}
             >
               <div
                 key={String(value)}
                 className={cn(
-                  "font-display text-6xl font-extrabold tabular-nums animate-in fade-in slide-in-from-top-1 duration-300 sm:text-7xl lg:text-8xl",
-                  dark ? "text-gold-warm" : "text-royal",
+                  "countdown-digit font-display font-extrabold leading-none tabular-nums",
+                  dark ? "text-countdown-accent" : "text-royal",
                 )}
               >
                 {label === "Days" ? value : pad(value as number)}
               </div>
-              <div className={cn("mt-2 text-[11px] font-semibold uppercase tracking-[0.2em] sm:text-xs", dark ? "text-navy-foreground/70" : "text-muted-foreground")}>
+              <div className={cn("mt-3 text-[10px] font-semibold uppercase sm:text-xs", dark ? "text-countdown-ink" : "text-muted-foreground")}>
                 {label}
               </div>
             </div>

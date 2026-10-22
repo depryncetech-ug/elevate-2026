@@ -11,7 +11,7 @@ import { departmentsQuery, projectsQuery, studentsQuery, wishesQuery } from "@/l
 import { Countdown } from "@/components/countdown/Countdown";
 import { ProjectCarousel } from "@/components/projects/ProjectCarousel";
 import { StudentCard } from "@/components/students/StudentCard";
-import { NewWishNotice, WishCard } from "@/components/wishes/Wishes";
+import { GratitudeMessages, NewWishNotice, WishCard } from "@/components/wishes/Wishes";
 import { useLiveWishes } from "@/components/wishes/useLiveWishes";
 import { CardGridSkeleton, EmptyState, SectionHeading } from "@/components/common/primitives";
 import { Button } from "@/components/ui/button";
@@ -47,7 +47,7 @@ function HomePage() {
   const projects = useQuery(projectsQuery);
   const students = useQuery(studentsQuery);
   const departments = useQuery(departmentsQuery);
-  const wishes = useQuery(wishesQuery(6));
+  const wishes = useQuery(wishesQuery(60));
   const newPosts = useLiveWishes(wishes.data, "homepage-gratitude");
 
   const featured = (projects.data ?? []).filter((p) => p.is_featured);
@@ -59,26 +59,26 @@ function HomePage() {
   return (
     <>
       {/* Hero */}
-      <section className="relative isolate flex min-h-[100svh] items-center overflow-hidden text-navy-foreground">
+      <section className="home-hero relative isolate flex items-center overflow-hidden text-navy-foreground">
         <div className="absolute inset-0 -z-20" aria-hidden>
           {HERO_SLIDES.map((src, i) => (
             <img key={src} src={src} alt="" loading={i === 0 ? "eager" : "lazy"} className="hero-slide absolute inset-0 h-full w-full object-cover" style={{ animationDelay: `${i * 6}s` }} />
           ))}
         </div>
         <div className="absolute inset-0 -z-10 bg-hero-overlay" />
-        <div className="w-full pb-16 pt-28">
-          <h1 className="px-4 text-center font-hero text-[clamp(2.75rem,9vw,7.5rem)] font-black uppercase leading-[0.95] tracking-tight text-balance">
+        <div className="home-hero-content w-full">
+          <h1 className="home-hero-title px-4 text-center font-hero font-black uppercase leading-[1.05] text-balance">
             Elevate <span className="text-gold-gradient">Class Of 2026</span>
           </h1>
           <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
-            <p className="mt-6 text-center text-lg text-navy-foreground/80 sm:text-xl">
+            <p className="hero-support mt-4 text-center text-base text-navy-foreground/80 sm:text-lg">
               Celebrating talent, creativity, learning and achievement.
             </p>
-            <div id="countdown" className="mt-8 scroll-mt-24">
+            <div id="countdown" className="hero-countdown mt-6 scroll-mt-24">
               <p className="mb-4 text-center text-xs font-semibold uppercase tracking-[0.25em] text-navy-foreground/70">Counting down to graduation</p>
               <Countdown variant="dark" />
             </div>
-            <div className="mt-8 flex justify-center">
+            <div className="hero-vote mt-6 flex justify-center">
               <Button asChild variant="gold" size="lg">
                 <Link to="/vote"><Vote className="h-5 w-5" /> Vote for Your Outstanding Student</Link>
               </Button>
@@ -165,24 +165,25 @@ function HomePage() {
           <SectionHeading
             eyebrow="Wall of Gratitude"
             title="Wall of Gratitude"
-            description="Video thank-you clips from the Class of 2026."
+            description="Messages and video thank-yous from the Class of 2026."
             action={
               <Button asChild variant="navy">
-                <Link to="/wishes"><MessageSquareHeart className="h-4 w-4" /> Record a clip</Link>
+                <Link to="/wishes"><MessageSquareHeart className="h-4 w-4" /> Share gratitude</Link>
               </Button>
             }
           />
           <NewWishNotice posts={newPosts} />
+          <GratitudeMessages wishes={wishes.data ?? []} newPosts={newPosts} />
           {wishes.isLoading ? (
             <CardGridSkeleton count={3} />
           ) : wishes.data?.length ? (
             <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-              {wishes.data.map((w) => (
+              {wishes.data.filter((w) => w.video_url).slice(0, 6).map((w) => (
                 <WishCard key={w.id} wish={w} isNew={newPosts.some((post) => post.id === w.id)} />
               ))}
             </div>
           ) : (
-            <EmptyState icon={MessageSquareHeart} title="No gratitude clips yet. Be the first to share one!" />
+            <EmptyState icon={MessageSquareHeart} title="No gratitude posts yet. Be the first to share one!" />
           )}
         </div>
       </section>
