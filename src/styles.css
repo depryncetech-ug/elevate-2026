@@ -78,10 +78,11 @@
   --gold: var(--pink-red);
   --gold-warm: var(--brand-white);
   --gold-foreground: var(--brand-white);
-  --countdown-accent: oklch(0.47 0.095 177);
-  --countdown-surface: oklch(0.97 0.027 174);
-  --countdown-ink: var(--brand-ink);
-  --shadow-countdown: 0 10px 36px -16px color-mix(in oklch, var(--countdown-accent) 55%, transparent);
+  /* Countdown returns to the original soft translucent tiles with light digits. */
+  --countdown-accent: var(--brand-white);
+  --countdown-surface: color-mix(in oklch, var(--brand-white) 8%, transparent);
+  --countdown-ink: color-mix(in oklch, var(--brand-white) 72%, transparent);
+  --shadow-countdown: 0 10px 36px -16px color-mix(in oklch, var(--brand-white) 30%, transparent);
 
   --background: var(--brand-soft);
   --foreground: var(--brand-ink);
