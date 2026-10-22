@@ -1,6 +1,9 @@
 # Elevate Academy Graduation Portal — Roadmap
 
 ## Current request
+- [ ] Reduce homepage title and enlarge/animate the countdown, keeping it fully visible on opening.
+- [ ] Support text gratitude posts alongside videos and add a scrolling message strip on homepage and gratitude wall.
+- [ ] Verify text posting, video controls, and short-screen layouts.
 - [x] Remove student project submission controls and enforce admin-only writes/uploads.
 - [x] Add administrator department project creation with image, PDF and link.
 - [x] Test permissions and administrator creation flow (image upload, public showcase readback and deletion verified).
