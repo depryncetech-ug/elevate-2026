@@ -24,6 +24,13 @@ export function SiteHeader() {
   const [open, setOpen] = useState(false);
   const displayName = student?.full_name ?? user?.email ?? "Account";
 
+  useEffect(() => {
+    if (!open) return;
+    const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") setOpen(false); };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [open]);
+
   return (
     <header className="fixed inset-x-0 top-0 z-50 border-b border-navy-foreground/10 bg-navy/75 backdrop-blur-xl">
       <a href="#main" className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:rounded-md focus:bg-gold focus:px-3 focus:py-2 focus:text-gold-foreground">
