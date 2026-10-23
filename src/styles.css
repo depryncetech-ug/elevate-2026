@@ -223,6 +223,13 @@
   background-color: color-mix(in oklab, var(--color-background) 78%, transparent);
   backdrop-filter: blur(14px) saturate(160%);
 }
+@utility no-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
 @utility text-gold-gradient {
   background-image: var(--gradient-gold);
   -webkit-background-clip: text;
