@@ -47,6 +47,7 @@
   --color-countdown-accent: var(--countdown-accent);
   --color-countdown-surface: var(--countdown-surface);
   --color-countdown-ink: var(--countdown-ink);
+  --color-teal: var(--teal);
   --color-chart-1: var(--chart-1);
   --color-chart-2: var(--chart-2);
   --color-chart-3: var(--chart-3);
@@ -239,7 +240,7 @@
 .gratitude-notice { animation: gratitude-arrival 400ms ease-out both; }
 .home-hero { min-height: min(760px, calc(100svh - 24px)); }
 .home-hero-content { padding-top: 92px; padding-bottom: 32px; }
-.home-hero-title { font-size: 48px; letter-spacing: 0; }
+.home-hero-title { font-size: 54px; letter-spacing: 0; }
 .countdown-tile { height: 196px; }
 .countdown-digit { font-size: 96px; letter-spacing: 0; animation: countdown-flip 380ms ease-out both; }
 .countdown-celebration { animation: countdown-glow 4s ease-in-out infinite; }
