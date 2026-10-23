@@ -1,10 +1,9 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "@tanstack/react-router";
-import { LayoutDashboard, LogOut, Menu, User, Vote } from "lucide-react";
+import { LayoutDashboard, LogOut, Menu, User, Vote, X } from "lucide-react";
 import { useAuth } from "@/lib/auth";
 import { Logo, StudentAvatar } from "@/components/common/primitives";
 import { Button } from "@/components/ui/button";
-import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -81,42 +80,51 @@ export function SiteHeader() {
               <Link to="/login">Login</Link>
             </Button>
           )}
-          <Sheet open={open} onOpenChange={setOpen}>
-            <SheetTrigger asChild>
-              <Button variant="ghost" size="icon" className="text-navy-foreground hover:bg-navy-foreground/10 hover:text-navy-foreground lg:hidden" aria-label="Open menu">
-                <Menu className="h-5 w-5" />
-              </Button>
-            </SheetTrigger>
-            <SheetContent side="right" className="w-72">
-              <SheetHeader>
-                <SheetTitle><Logo /></SheetTitle>
-              </SheetHeader>
-              <nav aria-label="Mobile" className="mt-4 flex flex-col gap-1 px-4">
-                {NAV.map((item) => (
-                  <Link
-                    key={item.to}
-                    to={item.to}
-                    onClick={() => setOpen(false)}
-                    activeOptions={{ exact: item.to === "/" }}
-                    className="rounded-lg px-3 py-2.5 font-medium hover:bg-accent"
-                    activeProps={{ className: "bg-accent text-accent-foreground" }}
-                  >
-                    {item.label}
-                  </Link>
-                ))}
-                {user ? (
-                  <>
-                    <Link to="/profile" onClick={() => setOpen(false)} className="rounded-lg px-3 py-2.5 font-medium hover:bg-accent">My dashboard</Link>
-                    {isAdmin && <Link to="/admin" onClick={() => setOpen(false)} className="rounded-lg px-3 py-2.5 font-medium hover:bg-accent">Admin dashboard</Link>}
-                  </>
-                ) : (
-                  <Link to="/login" onClick={() => setOpen(false)} className="rounded-lg px-3 py-2.5 font-medium hover:bg-accent">Login</Link>
-                )}
-              </nav>
-            </SheetContent>
-          </Sheet>
+          <button
+            type="button"
+            onClick={() => setOpen((v) => !v)}
+            aria-expanded={open}
+            aria-controls="mobile-menu"
+            className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-lg text-navy-foreground hover:bg-navy-foreground/10 lg:hidden"
+            aria-label={open ? "Close menu" : "Open menu"}
+          >
+            {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+          </button>
         </div>
       </div>
+      {/* Compact mobile menu: drops down right under the navbar */}
+      {open && (
+        <div id="mobile-menu" className="border-t border-navy-foreground/10 bg-navy/95 backdrop-blur-xl lg:hidden">
+          <nav aria-label="Mobile" className="mx-auto flex max-w-7xl flex-col px-3 py-2">
+            {NAV.map((item) => (
+              <Link
+                key={item.to}
+                to={item.to}
+                onClick={() => setOpen(false)}
+                activeOptions={{ exact: item.to === "/" }}
+                className="rounded-lg px-3 py-2.5 text-sm font-medium text-navy-foreground/85 transition-colors hover:bg-navy-foreground/10 hover:text-navy-foreground"
+                activeProps={{ className: "bg-navy-foreground/10 !text-gold-warm" }}
+              >
+                {item.label}
+              </Link>
+            ))}
+            {user ? (
+              <>
+                <Link to="/profile" onClick={() => setOpen(false)} className="flex items-center gap-2 rounded-lg px-3 py-2.5 text-sm font-medium text-navy-foreground/85 hover:bg-navy-foreground/10"><User className="h-4 w-4" /> My dashboard</Link>
+                <Link to="/vote" onClick={() => setOpen(false)} className="flex items-center gap-2 rounded-lg px-3 py-2.5 text-sm font-medium text-navy-foreground/85 hover:bg-navy-foreground/10"><Vote className="h-4 w-4" /> Vote</Link>
+                {isAdmin && (
+                  <Link to="/admin" onClick={() => setOpen(false)} className="flex items-center gap-2 rounded-lg px-3 py-2.5 text-sm font-medium text-navy-foreground/85 hover:bg-navy-foreground/10"><LayoutDashboard className="h-4 w-4" /> Admin dashboard</Link>
+                )}
+                <button type="button" onClick={() => { setOpen(false); signOut(); }} className="flex items-center gap-2 rounded-lg px-3 py-2.5 text-left text-sm font-medium text-navy-foreground/85 hover:bg-navy-foreground/10">
+                  <LogOut className="h-4 w-4" /> Log out
+                </button>
+              </>
+            ) : (
+              <Link to="/login" onClick={() => setOpen(false)} className="rounded-lg px-3 py-2.5 text-sm font-medium text-navy-foreground/85 hover:bg-navy-foreground/10">Login</Link>
+            )}
+          </nav>
+        </div>
+      )}
     </header>
   );
 }
