@@ -6,8 +6,9 @@
 
 @theme inline {
   --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
-  --font-display: "Montserrat", "Inter", ui-sans-serif, sans-serif;
-  --font-hero: "Archivo", "Montserrat", ui-sans-serif, sans-serif;
+  --font-display: "Unbounded", "Inter", ui-sans-serif, sans-serif;
+  --font-hero: "Unbounded", "Inter", ui-sans-serif, sans-serif;
+  --font-serif: "Instrument Serif", ui-serif, Georgia, serif;
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
@@ -63,15 +64,16 @@
 
 :root {
   --radius: 0.875rem;
-  /* Elevate brand palette; legacy aliases keep existing UI variants themed. */
-  --coral: oklch(0.642831990 0.185517533 28.030258426);
-  --warm-red: oklch(0.636694427 0.193731328 20.759554281);
-  --pink-red: oklch(0.623693268 0.206162084 14.149887149);
-  --deep-pink: oklch(0.624333001 0.211625181 9.924618234);
+  /* Elevate brand palette (2026 refresh): orange primary, teal accent, cream surfaces; legacy aliases keep existing UI variants themed. */
+  --coral: oklch(0.6491 0.2003 36.50);
+  --warm-red: oklch(0.6686 0.2228 37.20);
+  --pink-red: oklch(0.6686 0.2228 37.20);
+  --deep-pink: oklch(0.6106 0.2485 358.25);
+  --teal: oklch(0.6118 0.1130 221.99);
   --brand-white: oklch(1 0 0);
-  --brand-ink: oklch(0.241418914 0.009454626 285.670246289);
-  --brand-soft: oklch(0.978471614 0.011023696 3.488039538);
-  --confetti-colors: #E85448, #E94B56, #E83D60, #E9396A, #FFFFFF;
+  --brand-ink: oklch(0.2455 0.0133 278.95);
+  --brand-soft: oklch(0.9738 0.0126 86.83);
+  --confetti-colors: #FF4E00, #EF5323, #EB0082, #0092B4, #FFFFFF;
   --navy: var(--brand-ink);
   --navy-foreground: var(--brand-white);
   --royal: var(--pink-red);
