@@ -6,8 +6,9 @@
 
 @theme inline {
   --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
-  --font-display: "Montserrat", "Inter", ui-sans-serif, sans-serif;
-  --font-hero: "Archivo", "Montserrat", ui-sans-serif, sans-serif;
+  --font-display: "Unbounded", "Inter", ui-sans-serif, sans-serif;
+  --font-hero: "Unbounded", "Inter", ui-sans-serif, sans-serif;
+  --font-serif: "Instrument Serif", ui-serif, Georgia, serif;
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
@@ -46,6 +47,7 @@
   --color-countdown-accent: var(--countdown-accent);
   --color-countdown-surface: var(--countdown-surface);
   --color-countdown-ink: var(--countdown-ink);
+  --color-teal: var(--teal);
   --color-chart-1: var(--chart-1);
   --color-chart-2: var(--chart-2);
   --color-chart-3: var(--chart-3);
@@ -63,15 +65,16 @@
 
 :root {
   --radius: 0.875rem;
-  /* Elevate brand palette; legacy aliases keep existing UI variants themed. */
-  --coral: oklch(0.642831990 0.185517533 28.030258426);
-  --warm-red: oklch(0.636694427 0.193731328 20.759554281);
-  --pink-red: oklch(0.623693268 0.206162084 14.149887149);
-  --deep-pink: oklch(0.624333001 0.211625181 9.924618234);
+  /* Elevate brand palette (2026 refresh): orange primary, teal accent, cream surfaces; legacy aliases keep existing UI variants themed. */
+  --coral: oklch(0.6491 0.2003 36.50);
+  --warm-red: oklch(0.6686 0.2228 37.20);
+  --pink-red: oklch(0.6686 0.2228 37.20);
+  --deep-pink: oklch(0.6106 0.2485 358.25);
+  --teal: oklch(0.6118 0.1130 221.99);
   --brand-white: oklch(1 0 0);
-  --brand-ink: oklch(0.241418914 0.009454626 285.670246289);
-  --brand-soft: oklch(0.978471614 0.011023696 3.488039538);
-  --confetti-colors: #E85448, #E94B56, #E83D60, #E9396A, #FFFFFF;
+  --brand-ink: oklch(0.2455 0.0133 278.95);
+  --brand-soft: oklch(0.9738 0.0126 86.83);
+  --confetti-colors: #FF4E00, #EF5323, #EB0082, #0092B4, #FFFFFF;
   --navy: var(--brand-ink);
   --navy-foreground: var(--brand-white);
   --royal: var(--pink-red);
@@ -237,7 +240,7 @@
 .gratitude-notice { animation: gratitude-arrival 400ms ease-out both; }
 .home-hero { min-height: min(760px, calc(100svh - 24px)); }
 .home-hero-content { padding-top: 92px; padding-bottom: 32px; }
-.home-hero-title { font-size: 48px; letter-spacing: 0; }
+.home-hero-title { font-size: 54px; letter-spacing: 0; }
 .countdown-tile { height: 196px; }
 .countdown-digit { font-size: 96px; letter-spacing: 0; animation: countdown-flip 380ms ease-out both; }
 .countdown-celebration { animation: countdown-glow 4s ease-in-out infinite; }
@@ -247,14 +250,14 @@
 .gratitude-message-item { width: 320px; max-width: calc(100vw - 48px); }
 .gratitude-marquee:hover .gratitude-track, .gratitude-marquee:focus-within .gratitude-track, .gratitude-marquee[data-paused="true"] .gratitude-track { animation-play-state: paused; }
 @keyframes gratitude-scroll { to { transform: translateX(-50%); } }
-@media (min-width: 1024px) { .home-hero-title { font-size: 56px; } }
+@media (min-width: 1024px) { .home-hero-title { font-size: 64px; } }
 @media (max-width: 639px) {
-  .home-hero-title { font-size: 32px; }
+  .home-hero-title { font-size: 36px; }
   .countdown-tile { height: 126px; border-radius: var(--radius); }
   .countdown-digit { font-size: 44px; }
   .home-hero-content { padding-top: 88px; padding-bottom: 28px; }
 }
-@media (max-width: 359px) { .countdown-digit { font-size: 36px; } .home-hero-title { font-size: 28px; } }
+@media (max-width: 359px) { .countdown-digit { font-size: 36px; } .home-hero-title { font-size: 30px; } }
 @media (max-height: 650px) and (min-width: 640px) {
   .home-hero-title { font-size: 40px; }
   .home-hero-content { padding-top: 80px; padding-bottom: 20px; }
