@@ -71,7 +71,7 @@ function HomePage() {
             Elevate <span className="text-gold-gradient">Class Of 2026</span>
           </h1>
           <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
-            <p className="hero-support mt-4 text-center text-base text-navy-foreground/80 sm:text-lg">
+            <p className="hero-support mt-4 text-center font-serif text-lg italic text-navy-foreground/80 sm:text-xl">
               Celebrating talent, creativity, learning and achievement.
             </p>
             <div id="countdown" className="hero-countdown mt-6 scroll-mt-24">
