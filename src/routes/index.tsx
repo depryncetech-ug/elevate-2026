@@ -117,7 +117,7 @@ function HomePage() {
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <p className="text-xs font-semibold uppercase tracking-[0.25em] text-gold-warm">Programs</p>
           <h2 className="mt-2 text-2xl font-extrabold sm:text-3xl">Six departments, one graduating class</h2>
-          <div className="no-scrollbar -mx-4 flex snap-x snap-mandatory scroll-px-4 gap-4 overflow-x-auto px-4 pb-1 sm:mx-0 sm:grid sm:grid-cols-2 sm:gap-4 sm:overflow-visible sm:px-0 sm:pb-0 lg:grid-cols-3" aria-label="Departments slider">
+          <div className="no-scrollbar -mx-4 mt-10 flex snap-x snap-mandatory scroll-px-4 gap-4 overflow-x-auto px-4 pb-1 sm:mx-0 sm:grid sm:grid-cols-2 sm:gap-4 sm:overflow-visible sm:px-0 sm:pb-0 lg:grid-cols-3" aria-label="Departments slider">
             {(departments.data ?? []).map((d) => {
               const Icon = DEPT_ICONS[d.slug] ?? Award;
               return (
