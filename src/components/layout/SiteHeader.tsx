@@ -101,8 +101,8 @@ export function SiteHeader() {
       </div>
       {/* Compact mobile menu: drops down right under the navbar */}
       {open && (
-        <div id="mobile-menu" className="border-t border-navy-foreground/10 bg-navy/95 backdrop-blur-xl lg:hidden">
-          <nav aria-label="Mobile" className="mx-auto flex max-w-7xl flex-col px-3 py-2">
+        <div id="mobile-menu" className="max-h-[calc(100dvh-4rem)] w-full overflow-y-auto overscroll-contain border-t border-navy-foreground/10 bg-navy/95 backdrop-blur-xl lg:hidden">
+          <nav aria-label="Mobile" className="mx-auto flex w-full max-w-7xl flex-col px-3 py-2">
             {NAV.map((item) => (
               <Link
                 key={item.to}

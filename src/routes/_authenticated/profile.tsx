@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
-import { CheckCircle2, FolderOpen, Loader2, MessageSquareHeart, Users, Vote } from "lucide-react";
+import { CheckCircle2, Loader2, MessageSquareHeart, Users, Vote } from "lucide-react";
 import { toast } from "sonner";
 import { z } from "zod";
 import { supabase } from "@/integrations/supabase/client";
@@ -128,10 +128,9 @@ function ProfilePage() {
           </div>
         </div>
 
-        <div className="grid gap-4 sm:grid-cols-3">
+        <div className="grid gap-4 sm:grid-cols-2">
           {[
             { to: "/vote" as const, icon: Users, label: "View Department Nominees" },
-            { to: "/projects" as const, icon: FolderOpen, label: "Explore Projects" },
             { to: "/wishes" as const, icon: MessageSquareHeart, label: "Graduation Wall" },
           ].map(({ to, icon: Icon, label }) => (
             <Link key={to} to={to} className="flex items-center gap-3 rounded-2xl border bg-card p-5 font-semibold shadow-soft transition-all hover:-translate-y-0.5 hover:border-gold">
