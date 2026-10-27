@@ -1,9 +1,8 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { ArrowLeft, Award, Github, Globe, GraduationCap, Linkedin, Palette, Vote } from "lucide-react";
-import { isValidUuid, projectsQuery, settingsQuery, studentQuery } from "@/lib/data";
+import { isValidUuid, settingsQuery, studentQuery } from "@/lib/data";
 import { useAuth } from "@/lib/auth";
-import { ProjectCard } from "@/components/projects/ProjectCard";
 import { DepartmentBadge, EmptyState, StudentAvatar } from "@/components/common/primitives";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -14,9 +13,9 @@ export const Route = createFileRoute("/students/$id")({
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
       { title: "Student Profile — Elevate Academy Class of Dec 2026" },
-      { name: "description", content: "Profile and projects of an Elevate Academy Class of December 2026 graduate." },
+      { name: "description", content: "Profile of an Elevate Academy Class of December 2026 graduate." },
       { property: "og:title", content: "Student Profile — Elevate Academy" },
-      { property: "og:description", content: "Meet a graduating student and explore their work." },
+      { property: "og:description", content: "Meet a graduating student of Elevate Academy." },
     ],
   }),
   component: StudentProfile,
@@ -26,7 +25,6 @@ function StudentProfile() {
   const { id } = Route.useParams();
   const valid = isValidUuid(id);
   const { data: student, isLoading } = useQuery({ ...studentQuery(id), enabled: valid });
-  const { data: projects } = useQuery(projectsQuery);
   const { data: settings } = useQuery(settingsQuery);
   const { student: me } = useAuth();
 
@@ -46,7 +44,6 @@ function StudentProfile() {
     );
   }
 
-  const theirProjects = (projects ?? []).filter((p) => p.student_id === student.id);
   const canVote =
     !!me && student.is_nominee && me.department_id === student.department_id && me.id !== student.id && !me.has_voted && settings?.voting_open;
 
@@ -97,18 +94,6 @@ function StudentProfile() {
             )}
           </div>
         </div>
-      </section>
-      <section className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
-        <h2 className="mb-6 text-2xl font-bold">Projects</h2>
-        {theirProjects.length ? (
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {theirProjects.map((p) => (
-              <ProjectCard key={p.id} project={p} />
-            ))}
-          </div>
-        ) : (
-          <EmptyState title="No projects have been added yet." />
-        )}
       </section>
     </>
   );
