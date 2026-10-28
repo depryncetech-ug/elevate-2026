@@ -56,9 +56,9 @@ function SidebarNav({ onNavigate }: { onNavigate?: () => void }) {
         <Link to="/" className="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm text-sidebar-foreground/75 hover:bg-sidebar-accent">
           <Home className="h-4 w-4" aria-hidden /> View portal
         </Link>
-        <button onClick={signOut} className="flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm text-sidebar-foreground/75 hover:bg-sidebar-accent">
+        <Button variant="ghost" onClick={signOut} className="w-full justify-start gap-3 px-3 text-sm font-normal text-sidebar-foreground/75 hover:bg-sidebar-accent">
           <LogOut className="h-4 w-4" aria-hidden /> Logout
-        </button>
+        </Button>
       </div>
     </div>
   );
@@ -87,18 +87,18 @@ function AdminLayout() {
         <SidebarNav />
       </aside>
       <div className="flex min-w-0 flex-1 flex-col">
-        <header className="sticky top-0 z-30 flex h-16 items-center gap-3 border-b glass px-4 sm:px-6">
+        <header className="sticky top-0 z-30 grid min-h-16 grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-2 border-b glass px-3 sm:gap-3 sm:px-6 lg:grid-cols-[minmax(0,1fr)_auto]">
           <Sheet open={open} onOpenChange={setOpen}>
             <SheetTrigger asChild>
-              <Button variant="ghost" size="icon" className="lg:hidden" aria-label="Open admin menu"><Menu className="h-5 w-5" /></Button>
+              <Button variant="ghost" size="icon" className="h-11 w-11 shrink-0 lg:hidden" aria-label="Open admin menu"><Menu className="h-5 w-5" /></Button>
             </SheetTrigger>
-            <SheetContent side="left" className="w-64 border-0 p-0">
+            <SheetContent side="left" className="w-64 max-w-[85vw] overflow-y-auto border-0 p-0">
               <SheetTitle className="sr-only">Admin navigation</SheetTitle>
               <SidebarNav onNavigate={() => setOpen(false)} />
             </SheetContent>
           </Sheet>
-          <h1 className="font-display text-base font-bold sm:text-lg">Elevate Academy Graduation 2026</h1>
-          <span className="ml-auto rounded-full bg-gold-gradient px-3 py-1 text-xs font-bold text-gold-foreground">Super Admin</span>
+          <h1 className="min-w-0 font-display text-xs font-bold leading-5 tracking-normal sm:text-base lg:text-lg"><span className="sm:hidden">Elevate 2026</span><span className="hidden sm:inline">Elevate Academy Graduation 2026</span></h1>
+          <span className="shrink-0 rounded-full bg-gold-gradient px-2 py-1 text-[10px] font-bold text-gold-foreground sm:px-3 sm:text-xs">Super Admin</span>
         </header>
         <main id="main" className="flex-1 p-4 sm:p-6 lg:p-8">
           <Outlet />
