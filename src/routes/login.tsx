@@ -4,7 +4,6 @@ import { Loader2, MailCheck } from "lucide-react";
 import { toast } from "sonner";
 import { z } from "zod";
 import { supabase } from "@/integrations/supabase/client";
-import { lovable } from "@/integrations/lovable";
 import { useAuth } from "@/lib/auth";
 import { requestActivation } from "@/lib/activation.functions";
 import { Logo } from "@/components/common/primitives";
@@ -100,11 +99,6 @@ function LoginPage() {
     }
   };
 
-  const google = async () => {
-    const result = await lovable.auth.signInWithOAuth("google", { redirect_uri: window.location.origin + "/login" });
-    if (result.error) toast.error("Google sign-in failed. Please try again.");
-  };
-
   return (
     <section className="relative flex min-h-[100svh] items-center justify-center overflow-hidden bg-navy-gradient px-4 pb-16 pt-24">
       <div aria-hidden className="pointer-events-none absolute -left-24 top-20 h-80 w-80 rounded-full bg-gold/15 blur-3xl" />
@@ -188,17 +182,6 @@ function LoginPage() {
                   Back to sign in
                 </button>
               </form>
-            )}
-            {mode !== "forgot" && (
-              <>
-                <div className="my-5 flex items-center gap-3 text-xs text-muted-foreground">
-                  <span className="h-px flex-1 bg-border" /> or <span className="h-px flex-1 bg-border" />
-                </div>
-                <Button type="button" variant="outline" className="w-full" onClick={google}>
-                  <svg className="h-4 w-4" viewBox="0 0 24 24" aria-hidden><path fill="currentColor" d="M21.35 11.1H12v2.8h5.35c-.25 1.45-1.65 4.25-5.35 4.25a5.9 5.9 0 0 1 0-11.8c1.85 0 3.1.8 3.8 1.45l2.6-2.5C16.75 3.75 14.6 2.8 12 2.8a9.2 9.2 0 0 0 0 18.4c5.3 0 8.8-3.7 8.8-8.95 0-.6-.05-1.05-.15-1.15Z" /></svg>
-                  Continue with Google
-                </Button>
-              </>
             )}
             <p className="mt-6 text-center text-xs text-muted-foreground">
               <Link to="/" className="hover:underline">← Back to the portal</Link>
