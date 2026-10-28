@@ -16,6 +16,10 @@ export const Route = createFileRoute("/_authenticated/admin")({
     meta: [
       { title: "Super Admin — Elevate Academy Graduation Portal" },
       { name: "description", content: "Manage students, nominees, voting and graduation settings." },
+      { property: "og:title", content: "Super Admin — Elevate Academy Graduation Portal" },
+      { property: "og:description", content: "Manage students, nominees, voting and graduation settings." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
       { name: "robots", content: "noindex" },
     ],
   }),
